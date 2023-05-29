@@ -1,0 +1,33 @@
+.purchases {
+    background-color: darkgray;
+    padding: 20px 20px 10px 20px;
+}
+
+.purchases .purchase {
+    border: 1px solid snow;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.purchases .purchase .purchase-title {
+    background-color: aqua;
+    padding: 10px;
+}
+
+.purchases .purchase .purchase-quantity {
+    display: flex;
+    gap: 3px;
+    background-color: antiquewhite;
+    padding: 10px;
+}
+
+.purchases .purchase .purchase-actions {
+    background-color: greenyellow;
+    padding: 10px;
+}
+
+.purchases .purchase .purchase-actions .hide {
+    display: none;
+}

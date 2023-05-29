@@ -1,0 +1,43 @@
+.events {
+    padding: 20px 20px 10px 20px;
+    background-color: cadetblue;
+    margin: 10px 0;
+}
+
+.events .event {
+    border: 1px solid black;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.events .event .event-image {
+    background-color: aqua;
+}
+
+.events .event .description {
+    background-color: antiquewhite;
+    flex: 1;
+}
+
+.events .event .actions {
+    background-color: aquamarine;
+    padding: 5px;
+}
+
+.events .event .actions .quantity {
+    background-color: salmon;
+    padding: 3px;
+    display: flex;
+    align-items: center;
+} 
+
+.events .event .actions .quantity .input {
+    width: 50px;
+    margin-right: 10px;
+}
+
+.events .event .actions .quantity .quantity-actions {
+    display: flex;
+    flex-direction: column;
+}
