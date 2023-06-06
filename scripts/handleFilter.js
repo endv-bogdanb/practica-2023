@@ -1,12 +1,12 @@
-import { eventsList } from "./data.js";
 import { addEvents } from "./updateUI.js";
 
-export const handleFilter = () => {
-    const query = document.querySelector('#filter-name').value.trim();
-    if (query) {
-        const eventsFiltered = eventsList.filter(event => event.title.toLowerCase().includes(query))
-        addEvents(eventsFiltered);
-    } else {
-        addEvents(eventsList);
-    }
-}
+export const handleFilter = async () => {
+  const description = document.querySelector("#filter-name").value.trim();
+
+  const response = await fetch(`/api/ticketEvents?description=${description}`);
+
+  /**@type {import("./mocks.js").TicketEvent[]} */
+  const tickets = await response.json();
+
+  addEvents(tickets);
+};

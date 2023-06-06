@@ -1,0 +1,15 @@
+{
+  "name": "ticket-manager",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "serve",
+    "start": "serve"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "14.2.0"
+  },
+  "msw": {
+    "workerDirectory": ""
+  }
+}

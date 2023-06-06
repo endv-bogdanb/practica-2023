@@ -1,37 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer type="module"></script>
-     <!-- <script defer type="module">
-        import {test} from './script.js'
-        window.test = test 
-     </script> -->
-    <title>Tickets Management</title>
-</head>
-<body>
-    <div class="filters">
-        <form class="filter-form">
-            <label for="filter-name">Filter by name</label>
-            <input type="text" id="filter-name">
-            <button class="btn-filter" type="submit">Filter</button>
-        </form>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <form class="search-form">
-            <label for="something1">something1</label>
-            <input type="text" id="something1">
-            <label for="something2">something2</label>
-            <input type="text" id="something2">
-            <button type="btn-search" type="submit">Search</button>
-            <!-- <button type="btn-search" type="submit" onclick="test(event)">Search</button> -->
-        </form>
-        <img src="" alt="">
+    <link rel="stylesheet" href="style.css" />
+
+    <script src="https://unpkg.com/msw/lib/iife/index.js" defer></script>
+    <script src="script.js" defer type="module"></script>
+
+    <title>Ticket Management</title>
+  </head>
+  <body>
+    <div class="filters">
+      <form class="filter-form">
+        <label for="filter-name">Filter by description</label>
+        <input type="text" id="filter-name" />
+        <button class="btn-filter" type="submit">Filter</button>
+      </form>
+
+      <form class="search-form">
+        <label for="something1">something1</label>
+        <input type="text" id="something1" />
+        <label for="something2">something2</label>
+        <input type="text" id="something2" />
+        <button type="btn-search" type="submit">Search</button>
+      </form>
+      <img src="" alt="" />
     </div>
     <div class="events"></div>
     <div class="cart"></div>
     <div class="purchases"></div>
-</body>
+  </body>
 </html>

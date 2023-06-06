@@ -1,3 +1,8 @@
+/**
+ *
+ * @param {import("./mocks.js").TicketEvent} param0
+ * @returns {HTMLDivElement}
+ */
 export const createPurchaseItem = ({ticketType, title, quantity}) => {
     const purchase = document.createElement('div');
     purchase.classList.add('purchase');
