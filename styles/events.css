@@ -6,18 +6,26 @@
 
 .events .event {
     border: 1px solid black;
+    border-radius: 8px;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin: 0 auto 10px auto;
+    max-width: 600px;
 }
 
 .events .event .event-image {
     background-color: aqua;
+    border-radius: 6px 0 0 6px;
+    min-width: 100px;
 }
 
 .events .event .description {
     background-color: antiquewhite;
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
 }
 
 .events .event .actions {
@@ -40,4 +48,8 @@
 .events .event .actions .quantity .quantity-actions {
     display: flex;
     flex-direction: column;
+}
+
+.events .event .add-to-cart-btn {
+    border-radius: 0 6px 6px 0;
 }
