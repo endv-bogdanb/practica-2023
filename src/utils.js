@@ -1,15 +1,14 @@
-import { createEvent } from "./createEvent.js";
-import { createPurchaseItem } from "./createPurchedItem.js";
+import { createEvent } from "./components/createEvent";
 
 /**
  *
  * @param {import("./mocks.js").TicketEvent} data
  */
 export const addPurchase = (data) => {
-  const purchases = document.querySelector(".purchases");
-  const newPurchase = createPurchaseItem(data);
-
-  purchases.appendChild(newPurchase);
+  const purchasedEvents =
+    JSON.parse(localStorage.getItem("purchasedEvents")) || [];
+  purchasedEvents.push(data);
+  localStorage.setItem("purchasedEvents", JSON.stringify(purchasedEvents));
 };
 
 /**

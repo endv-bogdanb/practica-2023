@@ -1,15 +1,20 @@
 {
-  "name": "ticket-manager",
+  "name": "ticket-management",
+  "private": true,
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "serve",
-    "start": "serve"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
-  "license": "MIT",
   "devDependencies": {
-    "serve": "14.2.0"
+    "msw": "^1.2.2",
+    "vite": "^4.3.9"
   },
-  "msw": {
-    "workerDirectory": ""
+  "dependencies": {
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.24",
+    "tailwindcss": "^3.3.2"
   }
 }

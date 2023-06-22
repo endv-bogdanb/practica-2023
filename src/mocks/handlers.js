@@ -33,7 +33,11 @@ db.ticketEvent.create({
   title: "Event-2",
   description: faker.lorem.sentence(),
 });
-
+db.ticketEvent.create({
+  title: "Event-3",
+  description: faker.lorem.sentence(),
+});
+let purchasedEvents = [];
 const handlers = [
   MockServiceWorker.rest.get("/api/ticketEvents", (req, res, ctx) => {
     const title = req.url.searchParams.get("title") ?? "";
@@ -57,6 +61,18 @@ const handlers = [
   }),
   MockServiceWorker.rest.get("*", (req) => {
     return req.passthrough();
+  }),
+  MockServiceWorker.rest.post("/api/purchasedEvents", (req, res, ctx) => {
+    const { ticketType, title, quantity } = req.body;
+    const purchasedEvent = {
+      ticketType,
+      title,
+      quantity,
+    };
+
+    purchasedEvents.push(purchasedEvent);
+
+    return res(ctx.status(200), ctx.json(purchasedEvent));
   }),
 ];
 

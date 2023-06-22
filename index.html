@@ -1,36 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" href="style.css" />
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./src/styles.css">
+    <link rel="stylesheet" href="./style.css">
 
     <script src="https://unpkg.com/msw/lib/iife/index.js" defer></script>
-    <script src="script.js" defer type="module"></script>
-
     <title>Ticket Management</title>
-  </head>
-  <body>
-    <div class="filters">
-      <form class="filter-form">
-        <label for="filter-name">Filter by description</label>
-        <input type="text" id="filter-name" />
-        <button class="btn-filter" type="submit">Filter</button>
-      </form>
+</head>
 
-      <form class="search-form">
-        <label for="something1">something1</label>
-        <input type="text" id="something1" />
-        <label for="something2">something2</label>
-        <input type="text" id="something2" />
-        <button type="btn-search" type="submit">Search</button>
-      </form>
-      <img src="" alt="" />
-    </div>
-    <div class="events"></div>
-    <div class="cart"></div>
-    <div class="purchases"></div>
-  </body>
+<body>
+    <header>
+        <nav class="container mx-auto px-4 py-2 flex items-center justify-between">
+            <div>
+                <a href="/" class="text-white font-bold text-2xl">Logo</a>
+            </div>
+            <div class="hidden md:block">
+                <ul class="flex space-x-4">
+                    <li><a href="/" class="text-white hover:text-blue-950 text-lg font-bold">Home</a></li>
+                    <li><a href="/orders" class="text-white hover:text-blue-950 text-lg font-bold">Orders</a></li>
+                </ul>
+            </div>
+            <div class="md:hidden">
+                <button type="button" class="text-white hover:text-blue-950 focus:outline-none focus:text-blue-950" id="mobileMenuBtn">
+       <svg xmlns="http://www.w3.org/2000/svg" fill="none " viewBox="0 0 24 24 " stroke-width="2 " stroke="currentColor " aria-hidden="true " class="block h-6 w-6 "><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16 "></path></svg>
+      </button>
+            </div>
+            <div class="hidden md:block">
+                <form class="ml-4 search-form">
+                    <div class="search-wrapper">
+                        <input type="text" placeholder="Search" class="py-2 px-3 text-gray-700 search-input" />
+                        <button type="submit" class="py-2 px-4 text-white filter-btn rounded-lg search-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path
+                            fill-rule="evenodd"
+                            d="M13.885 12.928l5.11 5.11a1 1 0 01-1.414 1.414l-5.11-5.11a8 8 0 111.414-1.414zM8 14A6 6 0 108 2a6 6 0 000 12z"
+                            clip-rule="evenodd"
+                            />
+                        </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </nav>
+        <div class="md:hidden hidden" id="mobileMenu">
+            <ul class="bg-gray-700 rounded-md text-white">
+                <li><a href="/" class="block px-4 py-2 hover:bg-gray-600">Home</a></li>
+                <li><a href="/orders" class="block px-4 py-2 hover:bg-gray-600">Orders</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="main-content-component">
+
+    </main>
+
+    <script type="module" src="/main.js"></script>
+</body>
+
 </html>

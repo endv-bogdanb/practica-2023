@@ -1,4 +1,123 @@
-@import './styles/reset.css';
-@import './styles/filters.css';
-@import './styles/events.css';
-@import './styles/purchases.css';
+
+.events {
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+h1 {
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    color: #ff7c08;
+}
+
+.events .event {
+  width: 300px;
+  border: 1px solid #ebf1f6;
+  box-shadow: 0 0 2px 0 rgba(145,158,171,.2), 0 12px 24px -4px rgba(145,158,171,.12);
+}
+
+.event img {
+    height: 150px;
+}
+
+#ticketType {
+  width: 100%;
+}
+
+.filter-icon {
+    width: 30px;
+    margin: 32px;
+}
+
+.actions {
+  flex-wrap: wrap;
+}
+
+.quantity {
+  margin: 12px auto;
+}
+
+.filters {
+  margin: 32px;
+}
+
+.filer-btn {
+    background-color: #1f2937;
+     margin: 0 auto
+}
+
+.search-form {
+    margin-left: -10rem;
+}
+
+.search-input {
+  padding: 4px 12px;
+  border-radius: 7px;
+}
+
+#successMessage {
+    text-align: center;
+    color: green;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+header {
+  background-color: #ff7c08;
+  position: sticky;
+  top: 0;
+}
+
+.filter-btn {
+    border: 1px solid #fff;
+    
+ 
+}
+
+.filter-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.add-btn {
+    background-color: #6eb356;
+}
+
+.add-to-cart-btn {
+    background: #1f2937;
+}
+
+.main-content-component {
+    margin-bottom: 40px;
+}
+
+.search-wrapper {
+  display: flex;
+  align-items: center;
+  transition: width 0.3s;
+  width: 200px; /* Adjust the width as needed */
+}
+
+.search-input {
+  width: 0;
+  overflow: hidden;
+  transition: width 0.3s;
+  background-color: transparent;
+}
+
+.search-input.active {
+  width: 100%;
+  padding-left: 0.75rem;
+  background-color: #fff;
+
+}
+
+.search-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
