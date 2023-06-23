@@ -2,10 +2,10 @@ import { addPurchase } from "../utils";
 
 /**
  *
- * @param {import("../mocks/handlers.js").TicketEvent} param0
+ * @param {import("../mocks/database").TicketEvent} param0
  * @returns {HTMLDivElement}
  */
-export const createEvent = ({ description, img, title }) => {
+export const createEvent = ({ description, img, name }) => {
   const eventDiv = document.createElement("div");
   eventDiv.classList.add(
     "event",
@@ -21,8 +21,8 @@ export const createEvent = ({ description, img, title }) => {
   );
 
   eventDiv.innerHTML = `
-   <h2 class="event-title text-2xl font-bold">${title}</h2>
-    <img src="${img}" alt="${title}" class="event-image w-full height-200 rounded object-cover mb-4">
+   <h2 class="event-title text-2xl font-bold">${name}</h2>
+    <img src="${img}" alt="${name}" class="event-image w-full height-200 rounded object-cover mb-4">
     <p class="description text-gray-700">${description}</p>
   `;
 
@@ -31,7 +31,7 @@ export const createEvent = ({ description, img, title }) => {
 
   actions.innerHTML = `
     <h2 class="text-lg font-bold mb-2">Choose Ticket Type:</h2>
-    <select id="ticketType" name="ticketType" class="select ${title}-ticket-type border border-gray-300 rounded py-2 px-3 bg-white text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+    <select id="ticketType" name="ticketType" class="select ${name}-ticket-type border border-gray-300 rounded py-2 px-3 bg-white text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
       <option value="Standard">Standard</option>
       <option value="VIP">VIP</option>
     </select>
@@ -154,7 +154,7 @@ export const createEvent = ({ description, img, title }) => {
   addToCart.disabled = true;
 
   addToCart.addEventListener("click", () => {
-    const ticketType = document.querySelector(`.${title}-ticket-type`).value;
+    const ticketType = document.querySelector(`.${name}-ticket-type`).value;
     const quantity = input.value;
 
     if (parseInt(quantity)) {

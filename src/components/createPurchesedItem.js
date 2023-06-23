@@ -1,6 +1,6 @@
 /**
  *
- * @param {import("../mocks/handlers.js").TicketEvent} param0
+ * @param {import("../mocks/database").TicketEvent} param0
  * @returns {HTMLDivElement}
  */
 export const createPurchasedItem = ({ ticketType, title, quantity }) => {

@@ -1,4 +1,5 @@
 import { factory, manyOf, oneOf, primaryKey } from "@mswjs/data";
+import {faker} from '@faker-js/faker'
 
 /**
  * @typedef {Object} TicketEvent
@@ -6,6 +7,10 @@ import { factory, manyOf, oneOf, primaryKey } from "@mswjs/data";
  * @property {TicketEventType} eventType
  * @property {Venue} venue
  * @property {TicketCategory} ticketCategory
+ * @property {string} description
+ * @property {string} name
+ * @property {Date} startDate
+ * @property {Date} endDate
  * @property {string} img
  */
 
@@ -57,13 +62,12 @@ import { factory, manyOf, oneOf, primaryKey } from "@mswjs/data";
  * @property {string} password
  */
 
-
 function makeAutoIcrement() {
   let id = 0;
   return () => ++id;
 }
 
-const db = factory({
+export const db = factory({
   event: {
     id: primaryKey(makeAutoIcrement()),
     eventType: oneOf("eventType", { nullable: false, unique: false }),
@@ -74,6 +78,13 @@ const db = factory({
     }),
     description: String,
     name: String,
+    img: () =>
+      faker.image.urlPlaceholder({
+        backgroundColor: "000000",
+        text: faker.lorem.word(),
+        height: 128,
+        width: 128,
+      }),
     startDate: () => new Date(),
     endDate: () => new Date(),
   },
@@ -186,14 +197,14 @@ function migrations() {
 
 migrations();
 
-console.log(
-  JSON.stringify(
-    {
-      events: db.event.findMany({}),
-    //   orders: db.order.findMany({}),
-    //   tickets: db.ticket.findMany({}),
-    },
-    null,
-    2
-  )
-);
+// console.log(
+//   JSON.stringify(
+//     {
+//       events: db.event.findMany({}),
+//     //   orders: db.order.findMany({}),
+//     //   tickets: db.ticket.findMany({}),
+//     },
+//     null,
+//     2
+//   )
+// );
