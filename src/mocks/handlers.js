@@ -1,5 +1,7 @@
-import { factory, primaryKey } from "https://cdn.skypack.dev/@mswjs/data";
-import { faker } from "https://cdn.skypack.dev/@faker-js/faker";
+import { setupWorker, rest } from "msw";
+import { factory, primaryKey } from "@mswjs/data";
+import { faker } from "@faker-js/faker";
+import "./database"
 
 /**
  * @typedef {Object} TicketEvent
@@ -38,13 +40,15 @@ db.ticketEvent.create({
   description: faker.lorem.sentence(),
 });
 let purchasedEvents = [];
+
 const handlers = [
-  MockServiceWorker.rest.get("/api/ticketEvents", (req, res, ctx) => {
+  rest.get("/api/ticketEvents", (req, res, ctx) => {
     const title = req.url.searchParams.get("title") ?? "";
     const description = req.url.searchParams.get("description") ?? "";
 
     return res(
       ctx.status(200),
+      ctx.delay(),
       ctx.json(
         db.ticketEvent.findMany({
           where: {
@@ -59,11 +63,8 @@ const handlers = [
       )
     );
   }),
-  MockServiceWorker.rest.get("*", (req) => {
-    return req.passthrough();
-  }),
-  MockServiceWorker.rest.post("/api/purchasedEvents", (req, res, ctx) => {
-    const { ticketType, title, quantity } = req.body;
+  rest.post("/api/purchasedEvents", async (req, res, ctx) => {
+    const { ticketType, title, quantity } = await req.json();
     const purchasedEvent = {
       ticketType,
       title,
@@ -72,10 +73,13 @@ const handlers = [
 
     purchasedEvents.push(purchasedEvent);
 
-    return res(ctx.status(200), ctx.json(purchasedEvent));
+    return res(ctx.status(200), ctx.delay(), ctx.json(purchasedEvent));
+  }),
+  rest.get("*", (req) => {
+    return req.passthrough();
   }),
 ];
 
-const worker = MockServiceWorker.setupWorker(...handlers);
+const worker = setupWorker(...handlers);
 
 worker.start();

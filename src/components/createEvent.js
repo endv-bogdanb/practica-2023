@@ -1,10 +1,10 @@
 import { addPurchase } from "../utils";
+
 /**
  *
- * @param {import("./mocks.js").TicketEvent} param0
+ * @param {import("../mocks/handlers.js").TicketEvent} param0
  * @returns {HTMLDivElement}
  */
-
 export const createEvent = ({ description, img, title }) => {
   const eventDiv = document.createElement("div");
   eventDiv.classList.add(

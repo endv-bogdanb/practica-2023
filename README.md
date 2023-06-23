@@ -1,11 +1,14 @@
-Prerequirets:
-
+1. Install
 ```bash
 npm i
 ```
 
-Start project:
-
-```bash
+2. Start
+```
 npm run dev
 ```
+
+3. Check browser console
+
+
+![alt schema](./schema.png)

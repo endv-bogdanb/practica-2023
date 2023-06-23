@@ -2,7 +2,7 @@ import { createEvent } from "./components/createEvent";
 
 /**
  *
- * @param {import("./mocks.js").TicketEvent} data
+ * @param {import("./mocks/handlers").TicketEvent} data
  */
 export const addPurchase = (data) => {
   const purchasedEvents =
@@ -13,7 +13,7 @@ export const addPurchase = (data) => {
 
 /**
  *
- * @param {import("./mocks.js").TicketEvent[]} events
+ * @param {import("./mocks/handlers").TicketEvent[]} events
  */
 export const addEvents = (events) => {
   const eventsDiv = document.querySelector(".events");
