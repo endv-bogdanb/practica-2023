@@ -5,6 +5,9 @@ export const handleFilter = async () => {
   const description = descriptionInput.value.trim().toLowerCase();
 
   const response = await fetch("/api/ticketEvents");
+  /**
+   * @type {import("../../mocks/database").TicketEvent[]}
+   */
   const tickets = await response.json();
 
   if (description) {

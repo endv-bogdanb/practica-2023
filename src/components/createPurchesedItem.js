@@ -1,10 +1,15 @@
+import { kebabCase } from "../utils";
+
 /**
  *
  * @param {import("../mocks/database").TicketEvent} param0
  * @returns {HTMLDivElement}
  */
-export const createPurchasedItem = ({ ticketType, title, quantity }) => {
+export const createPurchasedItem = ({ ticketType, name, quantity }) => {
   const purchase = document.createElement("div");
+
+  const title = kebabCase(name)
+
   purchase.classList.add(
     "bg-white",
     "px-4",

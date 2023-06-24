@@ -22,3 +22,10 @@ export const addEvents = (events) => {
     eventsDiv.appendChild(createEvent(event));
   });
 };
+
+/**
+ *
+ * @param {string} str
+ * @returns {string}
+ */
+export const kebabCase = (str) => str.replaceAll(" ", "-");

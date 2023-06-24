@@ -1,5 +1,5 @@
 import { factory, manyOf, oneOf, primaryKey } from "@mswjs/data";
-import {faker} from '@faker-js/faker'
+import { faker } from "@faker-js/faker";
 
 /**
  * @typedef {Object} TicketEvent
@@ -76,7 +76,7 @@ export const db = factory({
       nullable: false,
       unique: false,
     }),
-    description: String,
+    description: () => faker.lorem.sentence(),
     name: String,
     img: () =>
       faker.image.urlPlaceholder({
@@ -122,7 +122,7 @@ export const db = factory({
   },
   ticketCategory: {
     id: primaryKey(makeAutoIcrement()),
-    description: String,
+    description: () => faker.lorem.sentence(),
     price: Number,
   },
 });
@@ -161,10 +161,15 @@ function migrations() {
     eventType: jsEventType,
     venue: jsVenue,
     ticketCategory: [standardCategory, vipCategory],
-    description: "Lorem ipsum dolore",
     name: "Js heroes",
     startDate: new Date(),
     endDate: new Date(Date.now() + 432_000 * 1000) /* 5 days */,
+    img: faker.image.urlPlaceholder({
+      backgroundColor: "000000",
+      text: "Js heroes",
+      height: 128,
+      width: 128,
+    }),
   });
 
   /**
@@ -174,10 +179,15 @@ function migrations() {
     eventType: sportsEventType,
     venue: sportsVenue,
     ticketCategory: [standardCategory, vipCategory],
-    description: "Lorem ipsum dolore",
     name: "Athletism",
     startDate: new Date(),
     endDate: new Date(Date.now() + 432_000 * 1000) /* 5 days */,
+    img: faker.image.urlPlaceholder({
+      backgroundColor: "000000",
+      text: "Athletism",
+      height: 128,
+      width: 128,
+    }),
   });
 
   const ticket = db.ticket.create({
@@ -196,15 +206,3 @@ function migrations() {
 }
 
 migrations();
-
-// console.log(
-//   JSON.stringify(
-//     {
-//       events: db.event.findMany({}),
-//     //   orders: db.order.findMany({}),
-//     //   tickets: db.ticket.findMany({}),
-//     },
-//     null,
-//     2
-//   )
-// );

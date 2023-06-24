@@ -1,4 +1,4 @@
-import { addPurchase } from "../utils";
+import { addPurchase, kebabCase } from "../utils";
 
 /**
  *
@@ -7,6 +7,9 @@ import { addPurchase } from "../utils";
  */
 export const createEvent = ({ description, img, name }) => {
   const eventDiv = document.createElement("div");
+
+  const title = kebabCase(name)
+
   eventDiv.classList.add(
     "event",
     "bg-white",
@@ -31,7 +34,7 @@ export const createEvent = ({ description, img, name }) => {
 
   actions.innerHTML = `
     <h2 class="text-lg font-bold mb-2">Choose Ticket Type:</h2>
-    <select id="ticketType" name="ticketType" class="select ${name}-ticket-type border border-gray-300 rounded py-2 px-3 bg-white text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+    <select id="ticketType" name="ticketType" class="select ${title}-ticket-type border border-gray-300 rounded py-2 px-3 bg-white text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
       <option value="Standard">Standard</option>
       <option value="VIP">VIP</option>
     </select>
@@ -154,7 +157,7 @@ export const createEvent = ({ description, img, name }) => {
   addToCart.disabled = true;
 
   addToCart.addEventListener("click", () => {
-    const ticketType = document.querySelector(`.${name}-ticket-type`).value;
+    const ticketType = document.querySelector(`.${title}-ticket-type`).value;
     const quantity = input.value;
 
     if (parseInt(quantity)) {

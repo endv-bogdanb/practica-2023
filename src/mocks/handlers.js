@@ -3,23 +3,28 @@ import { db } from "./database";
 
 const handlers = [
   rest.get("/api/ticketEvents", (req, res, ctx) => {
-    //     return res(
-    //       ctx.status(200),
-    //       ctx.delay(),
-    //       ctx.json(
-    //         db.ticketEvent.findMany({
-    //           where: {
-    //             title: {
-    //               contains: title,
-    //             },
-    //             description: {
-    //               contains: description,
-    //             },
-    //           },
-    //         })
-    //       )
-    //     );
-    return res(ctx.status(200), ctx.delay(), ctx.json(db.event.findMany({})));
+    const name = req.url.searchParams.get("name") ?? "";
+    const description = req.url.searchParams.get("description") ?? "";
+  
+    return res(
+      ctx.status(200),
+      ctx.delay(),
+      ctx.json(
+        db.event.findMany({
+          where: {
+            name: {
+              contains: name,
+            },
+            description: {
+              contains: description,
+            },
+          },
+        })
+      )
+    );
+  }),
+  rest.post("/api/purchase", (req,res,ctx)=>{
+    return res(ctx.status(404), ctx.delay(), ctx.json({}))
   }),
   rest.get("*", (req) => {
     return req.passthrough();
