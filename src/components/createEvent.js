@@ -5,10 +5,16 @@ import { addPurchase, kebabCase } from "../utils";
  * @param {import("../mocks/database").TicketEvent} param0
  * @returns {HTMLDivElement}
  */
-export const createEvent = ({ description, img, name }) => {
+export const createEvent = ({
+  id,
+  description,
+  img,
+  name,
+  ticketCategories,
+}) => {
   const eventDiv = document.createElement("div");
 
-  const title = kebabCase(name)
+  const title = kebabCase(name);
 
   eventDiv.classList.add(
     "event",
@@ -32,11 +38,15 @@ export const createEvent = ({ description, img, name }) => {
   const actions = document.createElement("div");
   actions.classList.add("actions", "flex", "items-center", "mt-4");
 
+  const categoriesOptions = ticketCategories.map(
+    (ticketCategory) =>
+      `<option value=${ticketCategory.id}>${ticketCategory.description}</option>`
+  );
+
   actions.innerHTML = `
     <h2 class="text-lg font-bold mb-2">Choose Ticket Type:</h2>
     <select id="ticketType" name="ticketType" class="select ${title}-ticket-type border border-gray-300 rounded py-2 px-3 bg-white text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-      <option value="Standard">Standard</option>
-      <option value="VIP">VIP</option>
+      ${categoriesOptions.join("\n")}
     </select>
   `;
 
@@ -161,12 +171,12 @@ export const createEvent = ({ description, img, name }) => {
     const quantity = input.value;
 
     if (parseInt(quantity)) {
-      fetch("/api/purchasedEvents", {
+      fetch("/api/purchase", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ ticketType, title, quantity }),
+        body: JSON.stringify({ ticketType: +ticketType, eventId: id, quantity: +quantity }),
       })
         .then((response) => response.json())
         .then((data) => {

@@ -82,14 +82,21 @@ function renderContent(url) {
     const purchasesDiv = document.querySelector(".purchases");
 
     if (purchasesDiv) {
-      const purchasedEvents =
-        JSON.parse(localStorage.getItem("purchasedEvents")) || [];
-      if (purchasedEvents.length > 0) {
-        purchasedEvents.forEach((data) => {
-          const newPurchase = createPurchasedItem(data);
-          purchasesDiv.appendChild(newPurchase);
+      fetch("/api/orders")
+        .then((r) => r.json())
+        .then((
+          /**
+           * @type {import("./src/mocks/database").Order[]}
+           */
+          orders
+          ) => {
+          if (orders.length > 0) {
+            orders.forEach((order) => {
+              const newOrder = createPurchasedItem(order);
+              purchasesDiv.appendChild(newOrder);
+            });
+          }
         });
-      }
     }
   }
 }

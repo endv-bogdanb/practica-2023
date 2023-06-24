@@ -2,13 +2,13 @@ import { kebabCase } from "../utils";
 
 /**
  *
- * @param {import("../mocks/database").TicketEvent} param0
- * @returns {HTMLDivElement}
+ * @param {import("../mocks/database").Order} order
+ * @returns
  */
-export const createPurchasedItem = ({ ticketType, name, quantity }) => {
+export const createPurchasedItem = (order) => {
   const purchase = document.createElement("div");
 
-  const title = kebabCase(name)
+  const title = kebabCase(order.event.name);
 
   purchase.classList.add(
     "bg-white",
@@ -42,7 +42,7 @@ export const createPurchasedItem = ({ ticketType, name, quantity }) => {
     "sm:col-start-3",
     "sm:text-right"
   );
-  purchaseQuantity.innerText = `${quantity} x`;
+  purchaseQuantity.innerText = `${order.tickets.length} x`;
 
   purchase.appendChild(purchaseQuantity);
 
@@ -53,7 +53,7 @@ export const createPurchasedItem = ({ ticketType, name, quantity }) => {
     "text-gray-500",
     "sm:col-span-2"
   );
-  purchaseType.innerText = `${ticketType}`;
+  purchaseType.innerText = `${order.tickets[0].ticketCategory.description}`;
 
   purchase.appendChild(purchaseType);
 

@@ -6,7 +6,7 @@ import { faker } from "@faker-js/faker";
  * @property {number} id
  * @property {TicketEventType} eventType
  * @property {Venue} venue
- * @property {TicketCategory} ticketCategory
+ * @property {TicketCategory[]} ticketCategories
  * @property {string} description
  * @property {string} name
  * @property {Date} startDate
@@ -72,7 +72,7 @@ export const db = factory({
     id: primaryKey(makeAutoIcrement()),
     eventType: oneOf("eventType", { nullable: false, unique: false }),
     venue: oneOf("venue", { nullable: false, unique: false }),
-    ticketCategory: manyOf("ticketCategory", {
+    ticketCategories: manyOf("ticketCategory", {
       nullable: false,
       unique: false,
     }),
@@ -126,83 +126,3 @@ export const db = factory({
     price: Number,
   },
 });
-
-function migrations() {
-  const sportsEventType = db.eventType.create({ name: "Sports" });
-  const jsEventType = db.eventType.create({ name: "Javascript" });
-
-  const sportsVenue = db.venue.create({
-    location: "Cluj Arena",
-    type: "Arena",
-    capacity: 30_200,
-  });
-  const jsVenue = db.venue.create({
-    location: "Grand Hotel italia",
-    type: "Hotel",
-    capacity: 220,
-  });
-
-  const standardCategory = db.ticketCategory.create({
-    description: "Standard",
-    price: 100,
-  });
-
-  const vipCategory = db.ticketCategory.create({
-    description: "Vip",
-    price: 200,
-  });
-
-  const dummyCustomer = db.customer.create();
-
-  /**
-   * js event
-   */
-  const jsEvent = db.event.create({
-    eventType: jsEventType,
-    venue: jsVenue,
-    ticketCategory: [standardCategory, vipCategory],
-    name: "Js heroes",
-    startDate: new Date(),
-    endDate: new Date(Date.now() + 432_000 * 1000) /* 5 days */,
-    img: faker.image.urlPlaceholder({
-      backgroundColor: "000000",
-      text: "Js heroes",
-      height: 128,
-      width: 128,
-    }),
-  });
-
-  /**
-   * sports event
-   */
-  db.event.create({
-    eventType: sportsEventType,
-    venue: sportsVenue,
-    ticketCategory: [standardCategory, vipCategory],
-    name: "Athletism",
-    startDate: new Date(),
-    endDate: new Date(Date.now() + 432_000 * 1000) /* 5 days */,
-    img: faker.image.urlPlaceholder({
-      backgroundColor: "000000",
-      text: "Athletism",
-      height: 128,
-      width: 128,
-    }),
-  });
-
-  const ticket = db.ticket.create({
-    ticketCategory: standardCategory,
-    event: jsEvent,
-    seat: 1,
-  });
-
-  db.order.create({
-    event: jsEvent,
-    customer: dummyCustomer,
-    tickets: [ticket],
-    nrTickets: 1,
-    totalPrice: ticket.ticketCategory?.price ?? 0,
-  });
-}
-
-migrations();

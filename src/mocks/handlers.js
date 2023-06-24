@@ -1,11 +1,12 @@
 import { rest, setupWorker } from "msw";
 import { db } from "./database";
+import "./migrations";
 
 const handlers = [
   rest.get("/api/ticketEvents", (req, res, ctx) => {
     const name = req.url.searchParams.get("name") ?? "";
     const description = req.url.searchParams.get("description") ?? "";
-  
+
     return res(
       ctx.status(200),
       ctx.delay(),
@@ -23,8 +24,61 @@ const handlers = [
       )
     );
   }),
-  rest.post("/api/purchase", (req,res,ctx)=>{
-    return res(ctx.status(404), ctx.delay(), ctx.json({}))
+  rest.get("/api/orders", (req, res, ctx) => {
+    return res(ctx.status(200), ctx.delay(), ctx.json(db.order.findMany({})));
+  }),
+  rest.post("/api/purchase", async (req, res, ctx) => {
+    try {
+      const { eventId, ticketType, quantity } = await req.json();
+
+      const takenTicketIds = db.order
+        .findMany({ where: { event: { id: { equals: eventId } } } })
+        .map((order) => {
+          return order.tickets.map((ticket) => ticket.id);
+        })
+        .flat();
+
+      const tickets = db.ticket.findMany({
+        where: {
+          id: { notIn: takenTicketIds },
+          event: { id: { equals: eventId } },
+          ticketCategory: { id: { equals: ticketType } },
+        },
+        take: quantity,
+      });
+
+      if (tickets.length < quantity) {
+        return res(
+          ctx.status(400),
+          ctx.delay(),
+          ctx.json({ message: "Quantity is to large" })
+        );
+      }
+
+      const order = db.order.create({
+        event: db.event.findFirst({
+          where: { id: { equals: eventId } },
+          strict: true,
+        }),
+        customer: db.customer.findFirst({}),
+        tickets,
+        nrTickets: quantity,
+        totalPrice: tickets.reduce(
+          (acc, ticket) => acc + ticket.ticketCategory.price,
+          0
+        ),
+      });
+
+      return res(ctx.status(200), ctx.delay(), ctx.json(order));
+    } catch {
+      return res(
+        ctx.status(400),
+        ctx.delay(),
+        ctx.json({
+          message: "Event not found",
+        })
+      );
+    }
   }),
   rest.get("*", (req) => {
     return req.passthrough();
@@ -34,81 +88,3 @@ const handlers = [
 const worker = setupWorker(...handlers);
 
 worker.start();
-
-// import { setupWorker, rest } from "msw";
-// import { factory, primaryKey } from "@mswjs/data";
-// import { faker } from "@faker-js/faker";
-// import "./database"
-
-// const db = factory({
-//   ticketEvent: {
-//     id: primaryKey(faker.string.uuid),
-//     title: String,
-//     description: String,
-//     img: () =>
-//       faker.image.urlPlaceholder({
-//         backgroundColor: "000000",
-//         text: faker.lorem.word(),
-//         height: 128,
-//         width: 128,
-//       }),
-//   },
-// });
-
-// db.ticketEvent.create({
-//   title: "Event-1",
-//   description: faker.lorem.sentence(),
-// });
-
-// db.ticketEvent.create({
-//   title: "Event-2",
-//   description: faker.lorem.sentence(),
-// });
-// db.ticketEvent.create({
-//   title: "Event-3",
-//   description: faker.lorem.sentence(),
-// });
-// let purchasedEvents = [];
-
-// const handlers = [
-//   rest.get("/api/ticketEvents", (req, res, ctx) => {
-//     const title = req.url.searchParams.get("title") ?? "";
-//     const description = req.url.searchParams.get("description") ?? "";
-
-//     return res(
-//       ctx.status(200),
-//       ctx.delay(),
-//       ctx.json(
-//         db.ticketEvent.findMany({
-//           where: {
-//             title: {
-//               contains: title,
-//             },
-//             description: {
-//               contains: description,
-//             },
-//           },
-//         })
-//       )
-//     );
-//   }),
-//   rest.post("/api/purchasedEvents", async (req, res, ctx) => {
-//     const { ticketType, title, quantity } = await req.json();
-//     const purchasedEvent = {
-//       ticketType,
-//       title,
-//       quantity,
-//     };
-
-//     purchasedEvents.push(purchasedEvent);
-
-//     return res(ctx.status(200), ctx.delay(), ctx.json(purchasedEvent));
-//   }),
-//   rest.get("*", (req) => {
-//     return req.passthrough();
-//   }),
-// ];
-
-// const worker = setupWorker(...handlers);
-
-// worker.start();

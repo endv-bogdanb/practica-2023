@@ -1,8 +1,8 @@
 import { addEvents } from "../../utils";
 
 /**
- * 
- * @param {string} searchTerm 
+ *
+ * @param {string} searchTerm
  */
 export const handleSearch = async (searchTerm) => {
   const response = await fetch("/api/ticketEvents");
