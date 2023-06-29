@@ -1,24 +1,24 @@
-import { faker } from "@faker-js/faker";
-import { db } from "./database";
+import { faker } from '@faker-js/faker';
+import { db } from './database';
 
 const dummyCustomer = db.customer.create();
 
 const standardCategory = db.ticketCategory.create({
-  description: "Standard",
+  description: 'Standard',
   price: 100,
 });
 
 const vipCategory = db.ticketCategory.create({
-  description: "Vip",
+  description: 'Vip',
   price: 200,
 });
 
 const makeJsEvent = () => {
-  const jsEventType = db.eventType.create({ name: "Javascript" });
+  const jsEventType = db.eventType.create({ name: 'Javascript' });
 
   const jsVenue = db.venue.create({
-    location: "Grand Hotel italia",
-    type: "Hotel",
+    location: 'Grand Hotel italia',
+    type: 'Hotel',
     capacity: 220,
   });
 
@@ -26,12 +26,12 @@ const makeJsEvent = () => {
     eventType: jsEventType,
     venue: jsVenue,
     ticketCategories: [standardCategory, vipCategory],
-    name: "Js heroes",
+    name: 'Js heroes',
     startDate: new Date(),
     endDate: new Date(Date.now() + 432_000 * 1000) /* 5 days */,
     img: faker.image.urlPlaceholder({
-      backgroundColor: "000000",
-      text: "Js heroes",
+      backgroundColor: '000000',
+      text: 'Js heroes',
       height: 128,
       width: 128,
     }),
@@ -62,11 +62,11 @@ const makeJsEvent = () => {
 makeJsEvent();
 
 const makeSportsEvent = () => {
-  const sportsEventType = db.eventType.create({ name: "Sports" });
+  const sportsEventType = db.eventType.create({ name: 'Sports' });
 
   const sportsVenue = db.venue.create({
-    location: "Cluj Arena",
-    type: "Arena",
+    location: 'Cluj Arena',
+    type: 'Arena',
     capacity: 30_200,
   });
 
@@ -74,12 +74,12 @@ const makeSportsEvent = () => {
     eventType: sportsEventType,
     venue: sportsVenue,
     ticketCategories: [standardCategory, vipCategory],
-    name: "Athletism",
+    name: 'Athletism',
     startDate: new Date(),
     endDate: new Date(Date.now() + 432_000 * 1000) /* 5 days */,
     img: faker.image.urlPlaceholder({
-      backgroundColor: "000000",
-      text: "Athletism",
+      backgroundColor: '000000',
+      text: 'Athletism',
       height: 128,
       width: 128,
     }),
@@ -93,7 +93,7 @@ const makeRandomEvent = () => {
 
   const randomVenue = db.venue.create({
     location: faker.company.name(),
-    type: faker.helpers.arrayElement(["Arena", "Hotel", "Office"]),
+    type: faker.helpers.arrayElement(['Arena', 'Hotel', 'Office']),
     capacity: faker.number.int({ min: 20, max: 1_000 }),
   });
 
@@ -107,7 +107,7 @@ const makeRandomEvent = () => {
     startDate: new Date(),
     endDate: new Date(Date.now() + 432_000 * 1000) /* 5 days */,
     img: faker.image.urlPlaceholder({
-      backgroundColor: "000000",
+      backgroundColor: '000000',
       text: name,
       height: 128,
       width: 128,
