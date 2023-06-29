@@ -83,8 +83,8 @@ export const createPurchasedItem = (order) => {
   save.innerText = "Save";
   // Add event listener and functionality for the save button
 
-  const cancel = document.createElement("button");
-  cancel.classList.add(
+  const deleteEvent = document.createElement("button");
+  deleteEvent.classList.add(
     "ml-2",
     "text-sm",
     "font-medium",
@@ -92,12 +92,27 @@ export const createPurchasedItem = (order) => {
     "underline",
     "hover:text-red-500"
   );
-  cancel.innerText = "Cancel";
-  // Add event listener and functionality for the cancel button
+  deleteEvent.innerText = "Delete";
+
+  // Add event listener and functionality for the delete button
+  deleteEvent.addEventListener("click", () => {
+    fetch(`/api/orders/${order.id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
+      if (res.status === 200) {
+        // update UI
+      } else {
+        // Error message
+      }
+    });
+  });
 
   actions.appendChild(edit);
   actions.appendChild(save);
-  actions.appendChild(cancel);
+  actions.appendChild(deleteEvent);
   purchase.appendChild(actions);
 
   return purchase;

@@ -27,6 +27,20 @@ const handlers = [
   rest.get("/api/orders", (req, res, ctx) => {
     return res(ctx.status(200), ctx.delay(), ctx.json(db.order.findMany({})));
   }),
+
+  rest.delete("/api/orders/:id", (req, res, ctx) => {
+    const { id } = req.params;
+    const deleteOrder = db.order.delete({
+      where: {
+        id: {
+          equals: Number(id),
+        },
+      },
+    });
+
+    return res(deleteOrder ? ctx.status(200) : ctx.status(500), ctx.delay());
+  }),
+
   rest.post("/api/purchase", async (req, res, ctx) => {
     try {
       const { eventId, ticketType, quantity } = await req.json();
