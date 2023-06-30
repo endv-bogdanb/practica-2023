@@ -12,12 +12,8 @@ export function useDeleteOrder(orderId) {
   })
     .then((res) => res.json())
     .then((data) => {
-      const divWrapper = document.querySelector('.purchases');
-      divWrapper.innerHTML = '';
-      data.forEach((order) => {
-        const newOrder = createPurchasedItem(categories, order);
-        divWrapper.appendChild(newOrder);
-      });
+      const purchaseToBeRemoved = document.getElementById(`purchase-${data}`);
+      purchaseToBeRemoved.remove();
       toastr.success('Success!');
     })
     .catch(() => {

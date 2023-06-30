@@ -37,7 +37,7 @@ const handlers = [
 
   rest.delete('/api/orders/:id', (req, res, ctx) => {
     const { id } = req.params;
-    const deleteOrder = db.order.delete({
+    const deletedOrder = db.order.delete({
       where: {
         id: {
           equals: Number(id),
@@ -45,7 +45,7 @@ const handlers = [
       },
     });
     return res(
-      deleteOrder ? ctx.json(db.order.findMany({})) : ctx.status(500),
+      deletedOrder ? ctx.json(deletedOrder.id) : ctx.status(500),
       ctx.delay()
     );
   }),

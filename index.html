@@ -5,7 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./src/styles.css" />
     <link rel="stylesheet" href="./style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+      integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/solid.min.js"
+    />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <title>Ticket Management</title>
@@ -42,22 +54,9 @@
             type="button"
             class="text-white hover:text-blue-950 focus:outline-none focus:text-blue-950"
             id="mobileMenuBtn"
+            aria-label="mobile menu"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none "
-              viewBox="0 0 24 24 "
-              stroke-width="2 "
-              stroke="currentColor "
-              aria-hidden="true "
-              class="block h-6 w-6"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M4 6h16M4 12h16M4 18h16 "
-              ></path>
-            </svg>
+            <i class="fa-solid fa-bars text-xl"></i>
           </button>
         </div>
         <div class="hidden md:block">
@@ -66,24 +65,14 @@
               <input
                 type="text"
                 placeholder="Search"
-                class="py-2 px-3 text-gray-700 search-input"
+                class="py-2 px-3 me-1 text-gray-700 search-input"
               />
               <button
                 type="submit"
                 class="py-2 px-4 text-white filter-btn rounded-lg search-button"
+                aria-label="search"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M13.885 12.928l5.11 5.11a1 1 0 01-1.414 1.414l-5.11-5.11a8 8 0 111.414-1.414zM8 14A6 6 0 108 2a6 6 0 000 12z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
+                <i class="fa-solid fa-magnifying-glass text-xl"></i>
               </button>
             </div>
           </form>
