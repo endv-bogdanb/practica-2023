@@ -59,7 +59,6 @@ const handlers = [
         },
       },
     });
-    console.log('SE INCEARCA UPDATE...', eventId, ticketType, quantity);
     return res(ctx.status(200));
   }),
 

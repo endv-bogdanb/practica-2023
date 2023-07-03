@@ -1,8 +1,3 @@
-import { createPurchasedItem } from '../createPurchesedItem';
-import { useGetTicketCategories } from './use-get-ticket-categories';
-
-const categories = await useGetTicketCategories();
-
 export function useDeleteOrder(orderId) {
   fetch(`/api/orders/${orderId}`, {
     method: 'DELETE',

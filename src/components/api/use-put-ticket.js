@@ -16,7 +16,6 @@ export function usePutTicket(orderId, newType, newQuantity) {
     } else {
       // Error message
       toastr.error('Error!');
-      console.log('EROARE!!!');
     }
   });
 }

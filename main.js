@@ -94,7 +94,6 @@ function renderContent(url) {
           ) => {
             if (orders.length > 0) {
               orders.forEach((order) => {
-                console.log('ORDER?', order);
                 const newOrder = createPurchasedItem(categories, order);
                 purchasesDiv.appendChild(newOrder);
               });
