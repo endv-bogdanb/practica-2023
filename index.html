@@ -22,7 +22,7 @@
   </head>
 
   <body>
-    <header>
+    <header class="opacity-25">
       <nav
         class="container mx-auto px-4 py-2 flex items-center justify-between"
       >
@@ -89,6 +89,12 @@
         </ul>
       </div>
     </header>
+    <div
+      id="loader"
+      class="opacity-100 absolute w-[99vw] h-[95vh] flex items-center justify-center flex-wrap"
+    >
+      <i class="fa-solid fa-spinner fa-spin text-[200px] content-center"></i>
+    </div>
 
     <main class="main-content-component"></main>
     <script type="module" src="/main.js"></script>
