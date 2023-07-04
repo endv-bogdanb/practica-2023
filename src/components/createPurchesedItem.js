@@ -1,103 +1,125 @@
-import { kebabCase } from "../utils";
-
+import { kebabCase } from '../utils';
+import { usePutTicket } from './api/use-put-ticket';
+import { useDeleteOrder } from './api/use-delete-order';
+import { useStyle } from './styles';
 /**
  *
  * @param {import("../mocks/database").Order} order
  * @returns
  */
-export const createPurchasedItem = (order) => {
-  const purchase = document.createElement("div");
+export const createPurchasedItem = (categories, order) => {
+  const purchase = document.createElement('div');
+  purchase.id = `purchase-${order.id}`;
+  purchase.classList.add(...useStyle('purchase'));
 
+  const purchaseTitle = document.createElement('p');
   const title = kebabCase(order.event.name);
-
-  purchase.classList.add(
-    "bg-white",
-    "px-4",
-    "py-3",
-    "sm:grid",
-    "sm:grid-cols-3",
-    "sm:gap-4",
-    "sm:items-start",
-    "sm:border-b",
-    "sm:border-gray-200"
-  );
-
-  const purchaseTitle = document.createElement("p");
-  purchaseTitle.classList.add(
-    "text-lg",
-    "font-medium",
-    "text-gray-900",
-    "sm:col-span-2"
-  );
+  purchaseTitle.classList.add(...useStyle('purchaseTitle'));
   purchaseTitle.innerText = title;
 
   purchase.appendChild(purchaseTitle);
 
-  const purchaseQuantity = document.createElement("div");
-  purchaseQuantity.classList.add(
-    "mt-1",
-    "text-sm",
-    "text-gray-500",
-    "sm:mt-0",
-    "sm:col-start-3",
-    "sm:text-right"
-  );
-  purchaseQuantity.innerText = `${order.tickets.length} x`;
+  const purchaseQuantity = document.createElement('input');
+  purchaseQuantity.classList.add(...useStyle('purchaseQuantity'));
+  purchaseQuantity.type = 'number';
+  purchaseQuantity.min = '0';
+  purchaseQuantity.value = `${order.tickets.length}`;
+  purchaseQuantity.disabled = true;
 
-  purchase.appendChild(purchaseQuantity);
+  const purchaseQuantityWrapper = document.createElement('div');
 
-  const purchaseType = document.createElement("div");
-  purchaseType.classList.add(
-    "mt-1",
-    "text-sm",
-    "text-gray-500",
-    "sm:col-span-2"
+  purchaseQuantityWrapper.classList.add(...useStyle('purchaseQuantityWrapper'));
+  purchaseQuantityWrapper.append(purchaseQuantity);
+  purchase.appendChild(purchaseQuantityWrapper);
+
+  const purchaseType = document.createElement('select');
+  purchaseType.classList.add(...useStyle('purchaseType'));
+
+  const categoriesOptions = categories.map(
+    (ticketCategory) =>
+      `<option class="text-sm font-bold text-black" value=${
+        ticketCategory.id
+      } ${
+        ticketCategory.id === order.tickets[0].ticketCategory.id
+          ? 'selected'
+          : ''
+      }>${ticketCategory.description}</option>`
   );
-  purchaseType.innerText = `${order.tickets[0].ticketCategory.description}`;
+
+  purchaseType.setAttribute('disabled', 'true');
+  purchaseType.innerHTML = `
+    ${categoriesOptions.join('\n')}
+  `;
 
   purchase.appendChild(purchaseType);
 
-  const actions = document.createElement("div");
-  actions.classList.add("mt-4", "sm:mt-0", "sm:col-start-3", "sm:text-right");
+  const actions = document.createElement('div');
+  actions.classList.add(...useStyle('actions'));
 
-  const edit = document.createElement("button");
-  edit.classList.add(
-    "text-sm",
-    "font-medium",
-    "text-blue-600",
-    "underline",
-    "hover:text-blue-500"
+  const editButton = document.createElement('button');
+  editButton.classList.add(...useStyle(['actionButton', 'editButton']));
+  editButton.innerHTML = `<i class="fa-solid fa-pencil"></i>`;
+
+  editButton.addEventListener('click', editHandler);
+  function editHandler() {
+    if (
+      saveButton.classList.contains('hidden') &&
+      cancelButton.classList.contains('hidden')
+    ) {
+      //we want to make edit action => show SAVE and CANCEL
+      editButton.classList.add('hidden');
+      saveButton.classList.remove('hidden');
+      cancelButton.classList.remove('hidden');
+      purchaseType.removeAttribute('disabled');
+      purchaseQuantity.removeAttribute('disabled');
+    }
+  }
+
+  const saveButton = document.createElement('button');
+  saveButton.classList.add(
+    ...useStyle(['actionButton', 'hiddenButton', 'saveButton'])
   );
-  edit.innerText = "Edit";
-  // Add event listener and functionality for the edit button
+  saveButton.classList.a;
+  saveButton.innerHTML = `<i class="fa-solid fa-check"></i>`;
 
-  const save = document.createElement("button");
-  save.classList.add(
-    "ml-2",
-    "text-sm",
-    "font-medium",
-    "text-gray-500",
-    "underline",
-    "hover:text-gray-400"
+  saveButton.addEventListener('click', saveHandler);
+  function saveHandler() {
+    // get values to use for update
+    const newType = purchaseType.value;
+    const newQuantity = purchaseQuantity.value;
+    order.tickets;
+    usePutTicket(order.id, newType, newQuantity);
+  }
+
+  const cancelButton = document.createElement('button');
+  cancelButton.classList.add(
+    ...useStyle(['actionButton', 'hiddenButton', 'cancelButton'])
   );
-  save.innerText = "Save";
-  // Add event listener and functionality for the save button
+  cancelButton.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
 
-  const cancel = document.createElement("button");
-  cancel.classList.add(
-    "ml-2",
-    "text-sm",
-    "font-medium",
-    "text-red-600",
-    "underline",
-    "hover:text-red-500"
-  );
-  cancel.innerText = "Cancel";
-  // Add event listener and functionality for the cancel button
+  cancelButton.addEventListener('click', cancelHandler);
+  function cancelHandler() {
+    saveButton.classList.add('hidden');
+    cancelButton.classList.add('hidden');
+    editButton.classList.remove('hidden');
+    // purchaseType.value = order.tickets[0].ticketCategory.description;
+    purchaseQuantity.value = order.tickets.length;
+    purchaseType.setAttribute('disabled', 'true'); // remember to restore to initial value!!!
+    purchaseQuantity.setAttribute('disabled', 'true'); // remember to restore to initial value!!!
+  }
 
-  actions.appendChild(edit);
-  actions.appendChild(save);
-  actions.appendChild(cancel);
+  const deleteButton = document.createElement('button');
+  deleteButton.classList.add(...useStyle(['actionButton', 'deleteButton']));
+  deleteButton.innerHTML = `<i class="fa-solid fa-trash-can"></i>`;
+
+  deleteButton.addEventListener('click', deleteHandler);
+  function deleteHandler() {
+    useDeleteOrder(order.id); //api call to delete order
+  }
+  actions.appendChild(editButton);
+  actions.appendChild(saveButton);
+  actions.appendChild(cancelButton);
+  actions.appendChild(deleteButton);
   purchase.appendChild(actions);
 
   return purchase;

@@ -1,11 +1,18 @@
-import { rest, setupWorker } from "msw";
-import { db } from "./database";
-import "./migrations";
+import { rest, setupWorker } from 'msw';
+import { db } from './database';
+import './migrations';
 
 const handlers = [
-  rest.get("/api/ticketEvents", (req, res, ctx) => {
-    const name = req.url.searchParams.get("name") ?? "";
-    const description = req.url.searchParams.get("description") ?? "";
+  rest.get('/api/ticketCategory', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.delay(),
+      ctx.json(db.ticketCategory.findMany({}))
+    );
+  }),
+  rest.get('/api/ticketEvents', (req, res, ctx) => {
+    const name = req.url.searchParams.get('name') ?? '';
+    const description = req.url.searchParams.get('description') ?? '';
 
     return res(
       ctx.status(200),
@@ -24,10 +31,38 @@ const handlers = [
       )
     );
   }),
-  rest.get("/api/orders", (req, res, ctx) => {
+  rest.get('/api/orders', (req, res, ctx) => {
     return res(ctx.status(200), ctx.delay(), ctx.json(db.order.findMany({})));
   }),
-  rest.post("/api/purchase", async (req, res, ctx) => {
+
+  rest.delete('/api/orders/:id', (req, res, ctx) => {
+    const { id } = req.params;
+    const deletedOrder = db.order.delete({
+      where: {
+        id: {
+          equals: Number(id),
+        },
+      },
+    });
+    return res(
+      deletedOrder ? ctx.json(deletedOrder.id) : ctx.status(500),
+      ctx.delay()
+    );
+  }),
+
+  rest.put('/api/orders/:id', async (req, res, ctx) => {
+    const { eventId, ticketType, quantity } = await req.json();
+    const updatedOrder = db.order.update({
+      where: {
+        id: {
+          equals: +eventId,
+        },
+      },
+    });
+    return res(ctx.status(200));
+  }),
+
+  rest.post('/api/purchase', async (req, res, ctx) => {
     try {
       const { eventId, ticketType, quantity } = await req.json();
 
@@ -51,7 +86,7 @@ const handlers = [
         return res(
           ctx.status(400),
           ctx.delay(),
-          ctx.json({ message: "Quantity is to large" })
+          ctx.json({ message: 'Quantity is to large' })
         );
       }
 
@@ -75,12 +110,12 @@ const handlers = [
         ctx.status(400),
         ctx.delay(),
         ctx.json({
-          message: "Event not found",
+          message: 'Event not found',
         })
       );
     }
   }),
-  rest.get("*", (req) => {
+  rest.get('*', (req) => {
     return req.passthrough();
   }),
 ];
