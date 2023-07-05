@@ -75,6 +75,8 @@ const handlers = [
           },
         },
         data: {
+          nrTickets: quantity,
+          totalPrice: quantity * ticketCategory.price,
           tickets: (tickets, order) => {
             if (tickets.length > quantity) {
               return tickets.splice(0, quantity);
