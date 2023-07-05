@@ -2,6 +2,7 @@ import { kebabCase } from '../utils';
 import { usePutTicket } from './api/use-put-ticket';
 import { useDeleteOrder } from './api/use-delete-order';
 import { useStyle } from './styles';
+import { addLoader, removeLoader } from './loader';
 /**
  *
  * @param {import("../mocks/database").Order} order
@@ -86,11 +87,14 @@ export const createPurchasedItem = (categories, order) => {
 
     saveButton.addEventListener('click', saveHandler);
     function saveHandler() {
-        // get values to use for update
+        addLoader();
         const newType = purchaseType.value;
         const newQuantity = purchaseQuantity.value;
         usePutTicket(order.id, newType, newQuantity).then((res) => {
             if (res.status === 200) {
+                setTimeout(() => {
+                    removeLoader();
+                }, 200);
                 saveButton.classList.add('hidden');
                 cancelButton.classList.add('hidden');
                 editButton.classList.remove('hidden');
