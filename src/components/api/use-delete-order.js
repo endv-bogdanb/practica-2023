@@ -1,17 +1,22 @@
+import { addLoader, removeLoader } from "../loader";
+
 export function useDeleteOrder(orderId) {
+  addLoader();
+
   fetch(`/api/orders/${orderId}`, {
-    method: 'DELETE',
+    method: "DELETE",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   })
     .then((res) => res.json())
     .then((data) => {
+      removeLoader();
       const purchaseToBeRemoved = document.getElementById(`purchase-${data}`);
       purchaseToBeRemoved.remove();
-      toastr.success('Success!');
+      toastr.success("Success!");
     })
     .catch(() => {
-      toastr.error('Error!');
+      toastr.error("Error!");
     });
 }
