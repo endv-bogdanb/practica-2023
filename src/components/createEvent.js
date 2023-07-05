@@ -186,18 +186,27 @@ export const createEvent = ({
                     quantity: +quantity,
                 }),
             })
-                .then((response) => response.json())
-                .then((data) => {
-                    removeLoader();
-                    addPurchase(data); // Call the updated addPurchase function
-                    input.value = 0;
-                    addToCart.disabled = true;
-                    toastr.success('Success!');
-                })
-                .catch((error) => {
-                    console.error('Error saving purchased event:', error);
-                    toastr.error('Error!');
+            .then((response) => {
+                return response.json().then((data) => {
+                  if (!response.ok) {
+                    throw new Error(data.message);
+                  } 
+      
+                  return data;
                 });
+            })
+            .then((data) => {
+                addPurchase(data); // Call the updated addPurchase function
+                input.value = 0;
+                addToCart.disabled = true;
+                toastr.success('Success!');
+            })
+            .catch((error) => {
+                console.error('Error saving purchased event:', error);
+                toastr.error('Error!');
+            }).finally(() => {
+                removeLoader();
+            });
         } else {
             // Handle the case when quantity is not a valid number
             // Maybe show an error message to the user
