@@ -85,11 +85,20 @@ function renderContent(url) {
             });
     } else if (url === '/orders') {
         mainContentDiv.innerHTML = `
-    <div id="content" class="hidden">
-        <h1 class="text-2xl mb-4 mt-8 text-center">Purchased Tickets</h1>
-      <div class="purchases"></div>
-    </div>
-    `;
+        <div id="content" class="hidden">
+            <h1 class="text-2xl mb-4 mt-8 text-center">Purchased Tickets</h1>
+            <div class="purchases ml-6 mr-6">
+                <div class="bg-white px-4 py-3 gap-x-4 flex font-bold">
+                    <span class="flex-1">Name</span>
+                    <span class="flex-1 flex justify-end">Nr tickets</span>
+                    <span class="flex-1">Category</span>
+                    <span class="flex-1 hidden md:flex">Date</span>
+                    <span class="w-12 text-center hidden md:flex">Price</span>
+                    <span class="w-28 sm:w-8"></span>
+                </div>
+            </div>
+        </div>
+        `;
         const purchasesDiv = document.querySelector('.purchases');
         addLoader();
 
