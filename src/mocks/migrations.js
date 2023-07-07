@@ -70,7 +70,7 @@ const makeSportsEvent = () => {
     capacity: 30_200,
   });
 
-  db.event.create({
+  const athletismEvent = db.event.create({
     eventType: sportsEventType,
     venue: sportsVenue,
     ticketCategories: [standardCategory, vipCategory],
@@ -83,6 +83,17 @@ const makeSportsEvent = () => {
       height: 128,
       width: 128,
     }),
+  });
+
+  Array.from({ length: 6 }).forEach((_, index) => {
+    db.ticket.create({
+      ticketCategory: faker.helpers.arrayElement([
+        standardCategory,
+        vipCategory,
+      ]),
+      event: athletismEvent,
+      seat: ++index,
+    });
   });
 };
 
@@ -99,7 +110,7 @@ const makeRandomEvent = () => {
 
   const name = faker.lorem.word();
 
-  db.event.create({
+  const randomEvent = db.event.create({
     eventType: randomEventType,
     venue: randomVenue,
     ticketCategories: [standardCategory, vipCategory],
@@ -112,6 +123,17 @@ const makeRandomEvent = () => {
       height: 128,
       width: 128,
     }),
+  });
+
+  Array.from({ length: 3 }).forEach((_, index) => {
+    db.ticket.create({
+      ticketCategory: faker.helpers.arrayElement([
+        standardCategory,
+        vipCategory,
+      ]),
+      event: randomEvent,
+      seat: ++index,
+    });
   });
 };
 
