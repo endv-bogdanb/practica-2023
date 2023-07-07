@@ -126,11 +126,7 @@ const handlers = [
       });
 
       if (tickets.length < quantity) {
-        return res(
-          ctx.status(400),
-          ctx.delay(),
-          ctx.json({ message: "Quantity is to large" })
-        );
+        throw new Error('Quantity is too large');
       }
 
       const order = db.order.create({
@@ -148,12 +144,12 @@ const handlers = [
       });
 
       return res(ctx.status(200), ctx.delay(), ctx.json(order));
-    } catch {
+    } catch (e) {
       return res(
         ctx.status(400),
         ctx.delay(),
         ctx.json({
-          message: "Event not found",
+          message: e.message,
         })
       );
     }
