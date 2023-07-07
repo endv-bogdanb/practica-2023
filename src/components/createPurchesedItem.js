@@ -51,7 +51,30 @@ export const createPurchasedItem = (categories, order) => {
     ${categoriesOptions.join('\n')}
   `;
 
-  purchase.appendChild(purchaseType);
+  const purchaseTypeWrapper = document.createElement('div');
+  purchaseTypeWrapper.classList.add(...useStyle('purchaseTypeWrapper'));
+  purchaseTypeWrapper.append(purchaseType);
+
+  purchase.appendChild(purchaseTypeWrapper);
+
+  const purchaseDate = document.createElement('div');
+  purchaseDate.classList.add(...useStyle('purchaseDate'));
+  const purchaseDateValue = new Date(order.event.startDate);
+  const year = purchaseDateValue.getFullYear();
+  const month = String(purchaseDateValue.getMonth() + 1).padStart(2, '0');
+  const day = String(purchaseDateValue.getDate()).padStart(2, '0');
+  const formattedPurchaseDate = `${day}-${month}-${year}`;
+  purchaseDate.innerText = formattedPurchaseDate;
+  
+  purchase.appendChild(purchaseDate);
+
+
+  const price = document.createElement('div');
+  price.classList.add(...useStyle('purchasePrice'));
+  price.innerText = order.totalPrice;
+  
+  purchase.appendChild(price);
+
 
   const actions = document.createElement('div');
   actions.classList.add(...useStyle('actions'));
