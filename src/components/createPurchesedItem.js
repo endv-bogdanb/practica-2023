@@ -63,21 +63,16 @@ export const createPurchasedItem = (categories, order) => {
 
   const purchaseDate = document.createElement('div');
   purchaseDate.classList.add(...useStyle('purchaseDate'));
-  const purchaseDateValue = new Date(order.event.startDate);
-  const year = purchaseDateValue.getFullYear();
-  const month = String(purchaseDateValue.getMonth() + 1).padStart(2, '0');
-  const day = String(purchaseDateValue.getDate()).padStart(2, '0');
-  const formattedPurchaseDate = `${day}-${month}-${year}`;
-  purchaseDate.innerText = formattedPurchaseDate;
+  purchaseDate.innerText = new Date(order.orderDate).toLocaleDateString();;
   
   purchase.appendChild(purchaseDate);
 
 
-  const price = document.createElement('div');
-  price.classList.add(...useStyle('purchasePrice'));
-  price.innerText = order.totalPrice;
+  const purchasePrice = document.createElement('div');
+  purchasePrice.classList.add(...useStyle('purchasePrice'));
+  purchasePrice.innerText = order.totalPrice;
   
-  purchase.appendChild(price);
+  purchase.appendChild(purchasePrice);
 
 
     const actions = document.createElement('div');
@@ -111,21 +106,30 @@ export const createPurchasedItem = (categories, order) => {
 
     saveButton.addEventListener('click', saveHandler);
     function saveHandler() {
-        addLoader();
         const newType = purchaseType.value;
         const newQuantity = purchaseQuantity.value;
-        usePutTicket(order.id, newType, newQuantity).then((res) => {
-            if (res.status === 200) {
+        if (newType != order.tickets[0].ticketCategory.id || newQuantity != order.tickets.length) {
+            addLoader();
+            usePutTicket(order.id, newType, newQuantity).then((res) => {
+                if (res.status === 200) {
+                    res.json().then((data) => {
+                        order = data;
+                        purchasePrice.innerText = order.totalPrice;
+                        purchaseDate.innerText = new Date(order.orderDate).toLocaleDateString();
+                    })
+                }
+            }).finally(() => {
                 setTimeout(() => {
                     removeLoader();
                 }, 200);
-                saveButton.classList.add('hidden');
-                cancelButton.classList.add('hidden');
-                editButton.classList.remove('hidden');
-                purchaseType.setAttribute('disabled', 'true');
-                purchaseQuantity.setAttribute('disabled', 'true');
-            }
-        });
+            });;
+        }
+
+        saveButton.classList.add('hidden');
+        cancelButton.classList.add('hidden');
+        editButton.classList.remove('hidden');
+        purchaseType.setAttribute('disabled', 'true');
+        purchaseQuantity.setAttribute('disabled', 'true');
     }
 
     const cancelButton = document.createElement('button');
@@ -139,7 +143,12 @@ export const createPurchasedItem = (categories, order) => {
         saveButton.classList.add('hidden');
         cancelButton.classList.add('hidden');
         editButton.classList.remove('hidden');
-        // purchaseType.value = order.tickets[0].ticketCategory.description;
+        Array.from(purchaseType.options).forEach(function(element, index) { // reset purchaseType to initial value
+            if (element.value == order.tickets[0].ticketCategory.id) {
+                purchaseType.options.selectedIndex = index;
+                return;
+            }
+        });
         purchaseQuantity.value = order.tickets.length;
         purchaseType.setAttribute('disabled', 'true'); // remember to restore to initial value!!!
         purchaseQuantity.setAttribute('disabled', 'true'); // remember to restore to initial value!!!
