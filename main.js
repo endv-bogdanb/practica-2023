@@ -1,7 +1,5 @@
 import './src/mocks/handlers';
-import { addEvents } from './src/utils';
-import { handleFilter } from './src/components/filters/handleFilter';
-import { handleSearch } from './src/components/filters/handleSearch';
+import { addEvents, handleFilter, handleSearch } from './src/utils';
 import { createPurchasedItem } from './src/components/createPurchesedItem';
 import { useGetTicketCategories } from '/src/components/api/use-get-ticket-categories';
 import { removeLoader, addLoader } from './src/components/loader';
@@ -55,22 +53,34 @@ function renderContent(url) {
         const searchForm = document.querySelector('.search-form');
         const searchInput = document.querySelector('.search-input');
         const searchButton = document.querySelector('.search-button');
-        filterIcon.addEventListener('click', () => {
+        const eventSection = document.querySelector('.events');
+
+      filterIcon.addEventListener('click', () => {
             filterWrapper.classList.toggle('hidden');
         });
 
-        filterForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            handleFilter();
-        });
+      filterForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-        searchForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const searchTerm = searchInput.value.trim().toLowerCase();
-            handleSearch(searchTerm);
-        });
+        const resultsFound = await handleFilter();
 
-        searchButton.addEventListener('click', () => {
+        if (!resultsFound) {
+          eventSection.innerHTML='No results found'
+        }
+      });
+
+
+      searchForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const searchTerm = searchInput.value.trim().toLowerCase();
+        const resultsFound = await handleSearch(searchTerm);
+        if (!resultsFound) {
+          eventSection.innerHTML = 'No results found';
+        }
+      });
+
+
+      searchButton.addEventListener('click', () => {
             searchInput.classList.toggle('active');
         });
         addLoader();
