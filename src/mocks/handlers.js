@@ -92,13 +92,14 @@ const handlers = [
               )
             );
           },
+          orderDate: new Date()
         },
         strict: true,
       });
 
       console.log(order);
 
-      return res(ctx.status(200), ctx.json({}));
+      return res(ctx.status(200), ctx.json(order));
     } catch (e) {
       console.log("FAIL ", e);
       return res(ctx.status(500), ctx.json({}));
