@@ -1,4 +1,4 @@
-import { createEvent } from "./components/createEvent";
+import { createEvent } from './components/createEvent';
 
 /**
  *
@@ -6,9 +6,9 @@ import { createEvent } from "./components/createEvent";
  */
 export const addPurchase = (data) => {
   const purchasedEvents =
-    JSON.parse(localStorage.getItem("purchasedEvents")) || [];
+    JSON.parse(localStorage.getItem('purchasedEvents')) || [];
   purchasedEvents.push(data);
-  localStorage.setItem("purchasedEvents", JSON.stringify(purchasedEvents));
+  localStorage.setItem('purchasedEvents', JSON.stringify(purchasedEvents));
 };
 
 /**
@@ -16,8 +16,8 @@ export const addPurchase = (data) => {
  * @param {import("./mocks/database").TicketEvent[]} events
  */
 export const addEvents = (events) => {
-  const eventsDiv = document.querySelector(".events");
-  eventsDiv.innerHTML = "";
+  const eventsDiv = document.querySelector('.events');
+  eventsDiv.innerHTML = '';
   events.forEach((event) => {
     eventsDiv.appendChild(createEvent(event));
   });
@@ -28,15 +28,13 @@ export const addEvents = (events) => {
  * @param {string} str
  * @returns {string}
  */
-export const kebabCase = (str) => str.replaceAll(" ", "-");
-
-
+export const kebabCase = (str) => str.replaceAll(' ', '-');
 /**
  *
  * @param {string} searchTerm
  */
 export const handleSearch = async (searchTerm) => {
-  const response = await fetch("/api/ticketEvents");
+  const response = await fetch('/api/ticketEvents');
   /**
    * @type {import("../../mocks/database").TicketEvent[]}
    */
@@ -54,13 +52,11 @@ export const handleSearch = async (searchTerm) => {
   return filteredTickets.length > 0;
 };
 
-
-
 export const handleFilter = async () => {
-  const descriptionInput = document.querySelector("#filter-name");
+  const descriptionInput = document.querySelector('#filter-name');
   const description = descriptionInput.value.trim().toLowerCase();
 
-  const response = await fetch("/api/ticketEvents");
+  const response = await fetch('/api/ticketEvents');
   /**
    * @type {import("../../mocks/database").TicketEvent[]}
    */

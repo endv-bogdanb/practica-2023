@@ -1,3 +1,6 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
 
 .events {
   justify-content: center;
@@ -9,7 +12,7 @@ h1 {
     font-size: 32px;
     font-weight: bold;
     margin-bottom: 12px;
-    color: #ff7c08;
+    color: #de411b;
 }
 
 .events .event {
@@ -18,8 +21,20 @@ h1 {
   box-shadow: 0 0 2px 0 rgba(145,158,171,.2), 0 12px 24px -4px rgba(145,158,171,.12);
 }
 
+.event-title {
+    color: #de411b
+}
+
 .event img {
     height: 150px;
+}
+
+.fa-trash-can {
+    color: #de411b;
+}
+
+.fa-pencil {
+    color: #000
 }
 
 #ticketType {
@@ -65,15 +80,24 @@ h1 {
 }
 
 header {
-  background-color: #ff7c08;
+  background-color: #fff;
   position: sticky;
   top: 0;
 }
 
 .filter-btn {
     border: 1px solid #fff;
-    
- 
+
+
+}
+
+.link-item {
+    color: #de411b
+}
+
+.logo {
+    height: 50px;
+    padding: 6px;
 }
 
 .filter-form {
@@ -83,11 +107,14 @@ header {
 }
 
 .add-btn {
-    background-color: #6eb356;
+    background-color: #de411b;
 }
 
 .add-to-cart-btn {
-    background: #1f2937;
+    background: #de411b;
+    margin: 22px auto;
+    display: block;
+    width: 100%;
 }
 
 .main-content-component {
@@ -106,6 +133,7 @@ header {
   overflow: hidden;
   transition: width 0.3s;
   background-color: transparent;
+  color: #de411b
 }
 
 .search-input.active {
@@ -120,4 +148,5 @@ header {
   border: none;
   cursor: pointer;
   padding: 0;
+  color: #de411b
 }

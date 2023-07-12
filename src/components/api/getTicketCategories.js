@@ -1,4 +1,4 @@
-export function useGetTicketCategories() {
+export function getTicketCategories() {
   const result = fetch(`/api/ticketCategory`, {
     method: 'GET',
     headers: {
