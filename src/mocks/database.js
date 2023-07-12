@@ -1,5 +1,5 @@
-import { factory, manyOf, oneOf, primaryKey } from "@mswjs/data";
-import { faker } from "@faker-js/faker";
+import { factory, manyOf, oneOf, primaryKey } from '@mswjs/data';
+import { faker } from '@faker-js/faker';
 
 /**
  * @typedef {Object} TicketEvent
@@ -70,9 +70,9 @@ function makeAutoIcrement() {
 export const db = factory({
   event: {
     id: primaryKey(makeAutoIcrement()),
-    eventType: oneOf("eventType", { nullable: false, unique: false }),
-    venue: oneOf("venue", { nullable: false, unique: false }),
-    ticketCategories: manyOf("ticketCategory", {
+    eventType: oneOf('eventType', { nullable: false, unique: false }),
+    venue: oneOf('venue', { nullable: false, unique: false }),
+    ticketCategories: manyOf('ticketCategory', {
       nullable: false,
       unique: false,
     }),
@@ -80,7 +80,7 @@ export const db = factory({
     name: String,
     img: () =>
       faker.image.urlPlaceholder({
-        backgroundColor: "000000",
+        backgroundColor: '000000',
         text: faker.lorem.word(),
         height: 128,
         width: 128,
@@ -100,23 +100,23 @@ export const db = factory({
   },
   order: {
     id: primaryKey(makeAutoIcrement()),
-    event: oneOf("event", { nullable: false, unique: false }),
-    customer: oneOf("customer", { nullable: false, unique: false }),
-    tickets: manyOf("ticket", { nullable: false, unique: true }),
+    event: oneOf('event', { nullable: false, unique: false }),
+    customer: oneOf('customer', { nullable: false, unique: false }),
+    tickets: manyOf('ticket', { nullable: false, unique: true }),
     orderDate: () => new Date(),
     nrTickets: Number,
     totalPrice: Number,
   },
   customer: {
     id: primaryKey(makeAutoIcrement()),
-    name: () => "Dummy user",
-    email: () => "example@example.com",
-    password: () => "seCur3 P@assW!@#",
+    name: () => 'Dummy user',
+    email: () => 'example@example.com',
+    password: () => 'seCur3 P@assW!@#',
   },
   ticket: {
     id: primaryKey(makeAutoIcrement()),
-    ticketCategory: oneOf("ticketCategory", { nullable: false, unique: false }),
-    event: oneOf("event", { nullable: false, unique: false }),
+    ticketCategory: oneOf('ticketCategory', { nullable: false, unique: false }),
+    event: oneOf('event', { nullable: false, unique: false }),
     serialNr: () => window.crypto.randomUUID(),
     seat: Number,
   },
