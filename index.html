@@ -22,13 +22,13 @@
     </head>
 
     <body>
-        <header class="opacity-25">
+        <header id="page-header" class="opacity-25">
             <nav
                 class="container mx-auto px-4 py-2 flex items-center justify-between"
             >
                 <div>
-                    <a href="/" class="text-white font-bold text-2xl">
-                        <img class="logo" src="./src/assets/logo.png">
+                    <a href="/" aria-label="Go to home page" class="text-white font-bold text-2xl">
+                        <img class="logo" src="./src/assets/logo.png" alt="app logo">
                     </a>
                 </div>
                 <div class="hidden md:block">
@@ -49,35 +49,17 @@
                         </li>
                     </ul>
                 </div>
-                <div class="md:hidden">
-                    <button
-                        type="button"
-                        class="text-white hover:text-blue-950 focus:outline-none focus:text-blue-950"
-                        id="mobileMenuBtn"
-                        aria-label="mobile menu"
-                    >
-                        <i class="fa-solid fa-bars text-xl"></i>
-                    </button>
-                </div>
-                <div class="hidden md:block">
-                    <form class="ml-4 search-form">
-                        <div class="search-wrapper">
-                            <input
-                                type="text"
-                                placeholder="Search"
-                                class="py-2 px-3 me-1 text-gray-700 search-input"
-                            />
-                            <button
-                                type="submit"
-                                class="py-2 px-4 text-white filter-btn rounded-lg search-button"
-                                aria-label="search"
-                            >
-                                <i
-                                    class="fa-solid fa-magnifying-glass text-xl"
-                                ></i>
-                            </button>
-                        </div>
-                    </form>
+                <div class="w-16 flex justify-end pr-2">
+                    <div class="md:hidden">
+                        <button
+                            type="button"
+                            class="text-gray-700 hover:text-blue-950 focus:outline-none focus:text-blue-950"
+                            id="mobileMenuBtn"
+                            aria-label="mobile menu"
+                        >
+                            <i class="fa-solid fa-bars text-xl"></i>
+                        </button>
+                    </div>
                 </div>
             </nav>
             <div class="md:hidden hidden" id="mobileMenu">

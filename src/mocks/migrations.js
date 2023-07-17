@@ -138,3 +138,9 @@ const makeRandomEvent = () => {
 };
 
 makeRandomEvent();
+makeRandomEvent();
+makeRandomEvent();
+makeRandomEvent();
+makeRandomEvent();
+makeRandomEvent();
+makeRandomEvent();
