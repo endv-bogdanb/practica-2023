@@ -1,18 +1,18 @@
-import { rest, setupWorker } from "msw";
-import { db } from "./database";
-import "./migrations";
+import { rest, setupWorker } from 'msw';
+import { db } from './database';
+import './migrations';
 
 const handlers = [
-  rest.get("/api/ticketCategory", (req, res, ctx) => {
+  rest.get('/api/ticketCategory', (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.delay(),
       ctx.json(db.ticketCategory.findMany({}))
     );
   }),
-  rest.get("/api/ticketEvents", (req, res, ctx) => {
-    const name = req.url.searchParams.get("name") ?? "";
-    const description = req.url.searchParams.get("description") ?? "";
+  rest.get('/api/ticketEvents', (req, res, ctx) => {
+    const name = req.url.searchParams.get('name') ?? '';
+    const description = req.url.searchParams.get('description') ?? '';
 
     return res(
       ctx.status(200),
@@ -31,11 +31,11 @@ const handlers = [
       )
     );
   }),
-  rest.get("/api/orders", (req, res, ctx) => {
+  rest.get('/api/orders', (req, res, ctx) => {
     return res(ctx.status(200), ctx.delay(), ctx.json(db.order.findMany({})));
   }),
 
-  rest.delete("/api/orders/:id", (req, res, ctx) => {
+  rest.delete('/api/orders/:id', (req, res, ctx) => {
     const { id } = req.params;
     const deletedOrder = db.order.delete({
       where: {
@@ -50,7 +50,7 @@ const handlers = [
     );
   }),
 
-  rest.put("/api/orders/:id", async (req, res, ctx) => {
+  rest.put('/api/orders/:id', async (req, res, ctx) => {
     try {
       const { orderId, ticketCategoryId, quantity } = await req.json();
 
@@ -92,20 +92,21 @@ const handlers = [
               )
             );
           },
+          orderDate: new Date(),
         },
         strict: true,
       });
 
       console.log(order);
 
-      return res(ctx.status(200), ctx.json({}));
+      return res(ctx.status(200), ctx.json(order));
     } catch (e) {
-      console.log("FAIL ", e);
+      console.log('FAIL ', e);
       return res(ctx.status(500), ctx.json({}));
     }
   }),
 
-  rest.post("/api/purchase", async (req, res, ctx) => {
+  rest.post('/api/purchase', async (req, res, ctx) => {
     try {
       const { eventId, ticketType, quantity } = await req.json();
 
@@ -154,7 +155,7 @@ const handlers = [
       );
     }
   }),
-  rest.get("*", (req) => {
+  rest.get('*', (req) => {
     return req.passthrough();
   }),
 ];
