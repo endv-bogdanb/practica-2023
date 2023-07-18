@@ -3,8 +3,9 @@ import { addEvents, handleFilter, handleSearch } from './src/utils';
 import { createPurchasedItem } from './src/components/createPurchesedItem';
 import { useGetTicketCategories } from '/src/components/api/use-get-ticket-categories';
 import { removeLoader, addLoader } from './src/components/loader';
-
+import { sort } from './src/components/helpers/sort';
 const navLinks = document.querySelectorAll('nav a');
+let allOrders = [];
 navLinks.forEach((link) => {
     link.addEventListener('click', (event) => {
         event.preventDefault();
@@ -21,7 +22,6 @@ function navigateTo(url) {
 
 function renderContent(url) {
     const mainContentDiv = document.querySelector('.main-content-component');
-
     if (url === '/') {
         mainContentDiv.innerHTML = `
     <div id="content" class="hidden">
@@ -55,32 +55,30 @@ function renderContent(url) {
         const searchButton = document.querySelector('.search-button');
         const eventSection = document.querySelector('.events');
 
-      filterIcon.addEventListener('click', () => {
+        filterIcon.addEventListener('click', () => {
             filterWrapper.classList.toggle('hidden');
         });
 
-      filterForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
+        filterForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-        const resultsFound = await handleFilter();
+            const resultsFound = await handleFilter();
 
-        if (!resultsFound) {
-          eventSection.innerHTML='No results found'
-        }
-      });
+            if (!resultsFound) {
+                eventSection.innerHTML = 'No results found';
+            }
+        });
 
+        searchForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            const resultsFound = await handleSearch(searchTerm);
+            if (!resultsFound) {
+                eventSection.innerHTML = 'No results found';
+            }
+        });
 
-      searchForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const searchTerm = searchInput.value.trim().toLowerCase();
-        const resultsFound = await handleSearch(searchTerm);
-        if (!resultsFound) {
-          eventSection.innerHTML = 'No results found';
-        }
-      });
-
-
-      searchButton.addEventListener('click', () => {
+        searchButton.addEventListener('click', () => {
             searchInput.classList.toggle('active');
         });
         addLoader();
@@ -99,17 +97,26 @@ function renderContent(url) {
             <h1 class="text-2xl mb-4 mt-8 text-center">Purchased Tickets</h1>
             <div class="purchases ml-6 mr-6">
                 <div class="bg-white px-4 py-3 gap-x-4 flex font-bold">
-                    <span class="flex-1">Name</span>
-                    <span class="flex-1 flex justify-end">Nr tickets</span>
+                    <button class="flex flex-1 text-center justify-center" id="sorting-button-1">
+                        <span >Name</span>
+                        <i class="fa-solid fa-arrow-up-wide-short text-xl" id="sorting-icon-1"></i>     
+                    </button>
+                    <span class="flex-1">Nr tickets</span>
                     <span class="flex-1">Category</span>
                     <span class="flex-1 hidden md:flex">Date</span>
-                    <span class="w-12 text-center hidden md:flex">Price</span>
+                    <button class="flex text-center justify-center" id="sorting-button-2">
+                        <span>Price</span>
+                        <i class="fa-solid fa-arrow-up-wide-short text-xl" id="sorting-icon-2"></i>                  
+                    </button>
                     <span class="w-28 sm:w-8"></span>
+                </div>
+                <div id="purchases-content">
                 </div>
             </div>
         </div>
         `;
         const purchasesDiv = document.querySelector('.purchases');
+        const puchasesContet = document.getElementById('purchases-content');
         addLoader();
 
         if (purchasesDiv) {
@@ -126,13 +133,32 @@ function renderContent(url) {
                             setTimeout(() => {
                                 removeLoader();
                             }, 200);
+                            allOrders = [...orders];
+                            const sortingButtonByName =
+                                document.getElementById('sorting-button-1');
+                            sortingButtonByName.addEventListener(
+                                'click',
+                                () => {
+                                    handleSort('name');
+                                }
+                            );
+                            const sortingButtonByPrice =
+                                document.getElementById('sorting-button-2');
+                            sortingButtonByPrice.addEventListener(
+                                'click',
+                                () => {
+                                    handleSort('price');
+                                }
+                            );
                             orders.forEach((order) => {
                                 const newOrder = createPurchasedItem(
+                                    allOrders,
                                     categories,
                                     order
                                 );
-                                purchasesDiv.appendChild(newOrder);
+                                puchasesContet.appendChild(newOrder);
                             });
+                            purchasesDiv.appendChild(puchasesContet);
                         } else {
                             removeLoader();
                         }
@@ -140,6 +166,47 @@ function renderContent(url) {
                 );
         }
     }
+}
+
+function handleSort(property) {
+    switch (property) {
+        case 'name': {
+            const icon = document.getElementById('sorting-icon-1');
+            switchSortingIcon(icon, ['event', 'name']);
+            break;
+        }
+        case 'price': {
+            const icon = document.getElementById('sorting-icon-2');
+            switchSortingIcon(icon, ['totalPrice']);
+            break;
+        }
+        default:
+            console.log(`No property provided`);
+    }
+}
+
+function switchSortingIcon(icon, properties) {
+    if (icon.classList.contains('fa-arrow-up-wide-short')) {
+        icon.classList.remove('fa-arrow-up-wide-short');
+        icon.classList.add('fa-arrow-down-wide-short');
+        reorderItems('descending', properties);
+    } else {
+        icon.classList.remove('fa-arrow-down-wide-short');
+        icon.classList.add('fa-arrow-up-wide-short');
+        reorderItems('ascending', properties);
+    }
+}
+
+function reorderItems(way, arrayOfProperties) {
+    const newOrders = sort(allOrders, way, arrayOfProperties);
+    const puchasesContet = document.getElementById('purchases-content');
+    while (puchasesContet.firstChild) {
+        puchasesContet.removeChild(puchasesContet.firstChild);
+    }
+    newOrders.forEach((order) => {
+        const newOrder = createPurchasedItem(allOrders, categories, order);
+        puchasesContet.appendChild(newOrder);
+    });
 }
 
 // Listen for popstate event to handle browser back/forward navigation

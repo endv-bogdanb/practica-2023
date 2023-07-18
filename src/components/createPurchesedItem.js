@@ -8,16 +8,14 @@ import { addLoader, removeLoader } from './loader';
  * @param {import("../mocks/database").Order} order
  * @returns
  */
-export const createPurchasedItem = (categories, order) => {
+export const createPurchasedItem = (allOrders, categories, order) => {
     const purchase = document.createElement('div');
     purchase.id = `purchase-${order.id}`;
     purchase.classList.add(...useStyle('purchase'));
-
     const purchaseTitle = document.createElement('p');
     const title = kebabCase(order.event.name);
     purchaseTitle.classList.add(...useStyle('purchaseTitle'));
     purchaseTitle.innerText = title;
-
     purchase.appendChild(purchaseTitle);
 
     const purchaseQuantity = document.createElement('input');
@@ -53,32 +51,30 @@ export const createPurchasedItem = (categories, order) => {
     purchaseType.innerHTML = `
     ${categoriesOptions.join('\n')}
   `;
-  purchase.appendChild(purchaseType);
-  
-  const purchaseTypeWrapper = document.createElement('div');
-  purchaseTypeWrapper.classList.add(...useStyle('purchaseTypeWrapper'));
-  purchaseTypeWrapper.append(purchaseType);
+    purchase.appendChild(purchaseType);
 
-  purchase.appendChild(purchaseTypeWrapper);
+    const purchaseTypeWrapper = document.createElement('div');
+    purchaseTypeWrapper.classList.add(...useStyle('purchaseTypeWrapper'));
+    purchaseTypeWrapper.append(purchaseType);
 
-  const purchaseDate = document.createElement('div');
-  purchaseDate.classList.add(...useStyle('purchaseDate'));
-  const purchaseDateValue = new Date(order.event.startDate);
-  const year = purchaseDateValue.getFullYear();
-  const month = String(purchaseDateValue.getMonth() + 1).padStart(2, '0');
-  const day = String(purchaseDateValue.getDate()).padStart(2, '0');
-  const formattedPurchaseDate = `${day}-${month}-${year}`;
-  purchaseDate.innerText = formattedPurchaseDate;
-  
-  purchase.appendChild(purchaseDate);
+    purchase.appendChild(purchaseTypeWrapper);
 
+    const purchaseDate = document.createElement('div');
+    purchaseDate.classList.add(...useStyle('purchaseDate'));
+    const purchaseDateValue = new Date(order.event.startDate);
+    const year = purchaseDateValue.getFullYear();
+    const month = String(purchaseDateValue.getMonth() + 1).padStart(2, '0');
+    const day = String(purchaseDateValue.getDate()).padStart(2, '0');
+    const formattedPurchaseDate = `${day}-${month}-${year}`;
+    purchaseDate.innerText = formattedPurchaseDate;
 
-  const price = document.createElement('div');
-  price.classList.add(...useStyle('purchasePrice'));
-  price.innerText = order.totalPrice;
-  
-  purchase.appendChild(price);
+    purchase.appendChild(purchaseDate);
 
+    const price = document.createElement('div');
+    price.classList.add(...useStyle('purchasePrice'));
+    price.innerText = order.totalPrice;
+
+    purchase.appendChild(price);
 
     const actions = document.createElement('div');
     actions.classList.add(...useStyle('actions'));
@@ -152,6 +148,7 @@ export const createPurchasedItem = (categories, order) => {
     deleteButton.addEventListener('click', deleteHandler);
     function deleteHandler() {
         useDeleteOrder(order.id); //api call to delete order
+        allOrders = allOrders.filter((item) => item.id !== order.id);
     }
     actions.appendChild(editButton);
     actions.appendChild(saveButton);

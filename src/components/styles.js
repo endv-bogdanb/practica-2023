@@ -27,7 +27,7 @@ const bookOfStyles = {
     'focus:outline-none',
     'focus:shadow-outline',
   ],
-  purchaseQuantityWrapper: ['flex', 'flex-row', 'justify-end', 'flex-1'],
+  purchaseQuantityWrapper: ['flex', 'flex-row', 'flex-1'],
   purchaseType: [
     'w-fit',
     'py-1',
