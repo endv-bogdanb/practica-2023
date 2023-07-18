@@ -3,20 +3,21 @@ import { addEvents, handleFilter, handleSearch } from './src/utils';
 import { createOrderItem } from './src/components/createOrderItem.js';
 import { getTicketCategories } from './src/components/api/getTicketCategories.js';
 import { removeLoader, addLoader } from './src/components/loader';
-import { sort } from './src/components/helpers/sort';
-const navLinks = document.querySelectorAll('nav a');
-let allOrders = [];
-navLinks.forEach((link) => {
-    link.addEventListener('click', (event) => {
-        event.preventDefault();
-        const href = link.getAttribute('href');
-        navigateTo(href);
-    });
-});
-const categories = await useGetTicketCategories();
-// Handle navigation
+import {handleSort} from './src/components/helpers/sortingMechanism'
 import './src/mocks/handlers';
 
+export let allOrders = [];
+export const categories = await getTicketCategories();
+
+// Handle navigation
+const navLinks = document.querySelectorAll('nav a');
+navLinks.forEach((link) => {
+  link.addEventListener('click', (event) => {
+      event.preventDefault();
+      const href = link.getAttribute('href');
+      navigateTo(href);
+  });
+});
 // Navigate to a specific URL
 function navigateTo(url) {
   history.pushState(null, null, url);
@@ -55,15 +56,23 @@ function getOrdersPageTemplate() {
       <div id="content" class="hidden">
         <h1 class="text-2xl mb-4 mt-8 text-center">Purchased Tickets</h1>
         <div class="purchases ml-6 mr-6">
-          <div class="bg-white px-4 py-3 gap-x-4 flex font-bold">
-            <span class="flex-1">Name</span>
-            <span class="flex-1 flex justify-end">Nr tickets</span>
-            <span class="flex-1">Category</span>
-            <span class="flex-1 hidden md:flex">Date</span>
-            <span class="w-12 text-center hidden md:flex">Price</span>
-            <span class="w-28 sm:w-8"></span>
-          </div>
-        </div>
+                <div class="bg-white px-4 py-3 gap-x-4 flex font-bold">
+                    <button class="flex flex-1 text-center justify-center" id="sorting-button-1">
+                        <span >Name</span>
+                        <i class="fa-solid fa-arrow-up-wide-short text-xl" id="sorting-icon-1"></i>     
+                    </button>
+                    <span class="flex-1">Nr tickets</span>
+                    <span class="flex-1">Category</span>
+                    <span class="flex-1 hidden md:flex">Date</span>
+                    <button class="flex text-center justify-center" id="sorting-button-2">
+                        <span>Price</span>
+                        <i class="fa-solid fa-arrow-up-wide-short text-xl" id="sorting-icon-2"></i>                  
+                    </button>
+                    <span class="w-28 sm:w-8"></span>
+                </div>
+                <div id="purchases-content">
+                </div>
+            </div>
       </div>
   `;
 }
@@ -179,10 +188,38 @@ function renderHomePage() {
 function renderOrdersPage(categories) {
   const mainContentDiv = document.querySelector('.main-content-component');
   mainContentDiv.innerHTML = getOrdersPageTemplate();
+  const sortingButtonByName =
+              document.getElementById('sorting-button-1');
+          sortingButtonByName.addEventListener(
+              'click',
+              () => {
+                  handleSort('name');
+                  
+              }
+          );
 
+          const sortingButtonByPrice =
+              document.getElementById('sorting-button-2');
+          sortingButtonByPrice.addEventListener(
+              'click',
+              () => {
+                  handleSort('price');
+              }
+          ); 
   const purchasesDiv = document.querySelector('.purchases');
+  const puchasesContet = document.getElementById('purchases-content');
+  puchasesContet.addEventListener("delete",(e)=>{
+    allOrders=allOrders.filter(order=>order.id!==e.detail.id);
+  })
+  puchasesContet.addEventListener("update",(e)=>{
+    allOrders = allOrders.map(element => {
+      if (element.id === e.detail.order.id) {
+        return e.detail.order;
+      }
+      return element;
+    });
+  })
   addLoader();
-
   if (purchasesDiv) {
     fetchOrders()
       .then((orders) => {
@@ -190,10 +227,15 @@ function renderOrdersPage(categories) {
           setTimeout(() => {
             removeLoader();
           }, 200);
+          allOrders = [...orders];
           orders.forEach((order) => {
-            const newOrder = createOrderItem(categories, order);
-            purchasesDiv.appendChild(newOrder);
+              const newOrder = createOrderItem(
+                  categories,
+                  order
+              );
+              puchasesContet.appendChild(newOrder);
           });
+          purchasesDiv.appendChild(puchasesContet);
         } else {
           removeLoader();
         }

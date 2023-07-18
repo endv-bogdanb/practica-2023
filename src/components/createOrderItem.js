@@ -112,6 +112,12 @@ export const createOrderItem = (categories, order) => {
               order = data;
               purchasePrice.innerText = order.totalPrice;
               purchaseDate.innerText = new Date(order.orderDate).toLocaleDateString();
+              this.dispatchEvent(
+                new CustomEvent("update", {
+                  bubbles: true,
+                  detail: {order},
+                }),
+              );
             });
           }
         })
@@ -146,7 +152,12 @@ export const createOrderItem = (categories, order) => {
 
   function deleteHandler() {
     deleteOrder(order.id);
+    this.dispatchEvent(
+      new CustomEvent("delete", {
+        bubbles: true,
+        detail: { id: order.id},
+      }),
+    );
   }
-
   return purchase;
 };
