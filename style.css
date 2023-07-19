@@ -58,9 +58,8 @@ h1 {
   margin: 32px;
 }
 
-.filer-btn {
-    background-color: #1f2937;
-     margin: 0 auto
+.filter-btn {
+    background-color: #de411b;;
 }
 
 .search-form {
@@ -79,7 +78,7 @@ h1 {
     font-weight: bold;
 }
 
-header {
+#page-header {
   background-color: #fff;
   position: sticky;
   top: 0;
@@ -87,8 +86,6 @@ header {
 
 .filter-btn {
     border: 1px solid #fff;
-
-
 }
 
 .link-item {
@@ -98,12 +95,6 @@ header {
 .logo {
     height: 50px;
     padding: 6px;
-}
-
-.filter-form {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
 }
 
 .add-btn {
