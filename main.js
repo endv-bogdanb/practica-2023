@@ -3,7 +3,7 @@ import { addEvents, handleSearch } from './src/utils';
 import { createOrderItem } from './src/components/createOrderItem.js';
 import { getTicketCategories } from './src/components/api/getTicketCategories.js';
 import { removeLoader, addLoader } from './src/components/loader';
-import {handleSort} from './src/components/helpers/sortingMechanism'
+import { handleSort } from './src/components/helpers/sortingMechanism'
 import './src/mocks/handlers';
 
 export let allOrders = [];
