@@ -1,5 +1,5 @@
 // Imports
-import { addEvents, handleFilter, handleSearch } from './src/utils';
+import { addEvents, handleSearch } from './src/utils';
 import { createOrderItem } from './src/components/createOrderItem.js';
 import { getTicketCategories } from './src/components/api/getTicketCategories.js';
 import { removeLoader, addLoader } from './src/components/loader';
@@ -9,15 +9,8 @@ import './src/mocks/handlers';
 export let allOrders = [];
 export const categories = await getTicketCategories();
 
-// Handle navigation
-const navLinks = document.querySelectorAll('nav a');
-navLinks.forEach((link) => {
-  link.addEventListener('click', (event) => {
-      event.preventDefault();
-      const href = link.getAttribute('href');
-      navigateTo(href);
-  });
-});
+let events = null;
+
 // Navigate to a specific URL
 function navigateTo(url) {
   history.pushState(null, null, url);
@@ -28,22 +21,15 @@ function getHomePageTemplate() {
   return `
    <div id="content" class="hidden">
       <img src="./src/assets/Endava.png" alt="summer">
-      <div class="filter-section">
-          <div class="filter-icon" id="filterIcon">
-            <button class="cursor-pointer">
-              <i class="fa-solid fa-filter text-xl "></i>
-            </button>
-          </div>
-          <div class="filters hidden">
-            <form class="filter-form">
-              <label for="filter-name" class="font-bold text-lg text-gray-700"></label>
-              <input type="text" id="filter-name" placeholder="Filter by description" class="ml-2 w-full px-4 mt-4 mb-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
-              <button class="ml-2 px-4 py-2 text-white filer-btn rounded-lg" type="submit">Filter</button>
-            </form>
-            <img src="" alt="" />
+      <div class="flex flex-col items-center">
+        <div class="w-80">
+          <h1>Explore Events</h1>
+          <div class="filters flex flex-col">
+            <input type="text" id="filter-name" placeholder="Filter by name" class="px-4 mt-4 mb-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+            <button id="filter-button" class="px-4 py-2 text-white filter-btn rounded-lg">Filter</button>
           </div>
         </div>
-      <h1>Explore events</h1>
+      </div>
       <div class="events flex items-center justify-center flex-wrap">
       </div>
       <div class="cart"></div>
@@ -77,27 +63,29 @@ function getOrdersPageTemplate() {
   `;
 }
 
-function setupFilterEvents() {
-  const filterIcon = document.querySelector('.filter-icon');
-  const filterForm = document.querySelector('.filter-form');
-  const filterWrapper = document.querySelector('.filters');
-  const eventSection = document.querySelector('.events');
+function liveSearch() {
+  const filterInput = document.querySelector('#filter-name');
 
-  if(filterIcon) {
-    filterIcon.addEventListener('click', () => {
-      filterWrapper.classList.toggle('hidden');
-    });
+  if(filterInput) {
+    const searchValue = filterInput.value;
+    
+    if(searchValue) {
+      const filteredEvents = events.filter(event => event.name.toLowerCase().includes(searchValue.toLowerCase()));
+    
+      addEvents(filteredEvents);
+    }
   }
 
-  if(filterForm) {
-    filterForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
+}
 
-      const resultsFound = await handleFilter();
+function setupFilterEvents() {
+  const nameFilterInput = document.querySelector('#filter-name');
 
-      if (!resultsFound) {
-        eventSection.innerHTML = 'No results found';
-      }
+  if(nameFilterInput) {
+    const filterInterval = 500;
+
+    nameFilterInput.addEventListener('keyup', () => {
+      setTimeout(liveSearch, filterInterval);
     });
   }
 }
@@ -108,18 +96,23 @@ function setupSearchEvents() {
   const searchButton = document.querySelector('.search-button');
   const eventSection = document.querySelector('.events');
 
-  searchForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const searchTerm = searchInput.value.trim().toLowerCase();
-    const resultsFound = await handleSearch(searchTerm);
-    if (!resultsFound) {
-      eventSection.innerHTML = 'No results found';
-    }
-  });
+  
+  if(searchForm) {
+    searchForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const searchTerm = searchInput.value.trim().toLowerCase();
+      const resultsFound = await handleSearch(searchTerm);
+      if (!resultsFound) {
+        eventSection.innerHTML = 'No results found';
+      }
+    });
+  }
 
-  searchButton.addEventListener('click', () => {
-    searchInput.classList.toggle('active');
-  });
+  if(searchButton) {
+    searchButton.addEventListener('click', () => {
+      searchInput.classList.toggle('active');
+    });
+  }
 }
 
 function setupNavigationEvents() {
@@ -178,10 +171,11 @@ function renderHomePage() {
 
   fetchTicketEvents()
     .then((data) => {
+      events = data;
       setTimeout(() => {
         removeLoader();
       }, 200);
-      addEvents(data);
+      addEvents(events);
     });
 }
 

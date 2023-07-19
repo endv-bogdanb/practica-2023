@@ -78,7 +78,7 @@ const bookOfStyles = {
     'flex-col',
     'm-6',
     'mt-8',
-    'width-400',
+    'width-500',
   ],
 
   actionsWrapper: ['actions', 'flex', 'items-center', 'mt-4'],

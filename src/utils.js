@@ -17,10 +17,14 @@ export const addPurchase = (data) => {
  */
 export const addEvents = (events) => {
   const eventsDiv = document.querySelector('.events');
-  eventsDiv.innerHTML = '';
-  events.forEach((event) => {
-    eventsDiv.appendChild(createEvent(event));
-  });
+  eventsDiv.innerHTML = 'No events available';
+
+  if(events.length) {
+    eventsDiv.innerHTML = '';
+    events.forEach((event) => {
+      eventsDiv.appendChild(createEvent(event));
+    });
+  }
 };
 
 /**
@@ -50,30 +54,4 @@ export const handleSearch = async (searchTerm) => {
   addEvents(filteredTickets);
 
   return filteredTickets.length > 0;
-};
-
-export const handleFilter = async () => {
-  const descriptionInput = document.querySelector('#filter-name');
-  const description = descriptionInput.value.trim().toLowerCase();
-
-  const response = await fetch('/api/ticketEvents');
-  /**
-   * @type {import("../../mocks/database").TicketEvent[]}
-   */
-  const tickets = await response.json();
-
-  if (description) {
-    const filteredTickets = tickets.filter((ticket) => {
-      const ticketDescription = ticket.description.toLowerCase();
-      return ticketDescription.includes(description);
-    });
-
-    addEvents(filteredTickets);
-
-    return filteredTickets.length > 0;
-  } else {
-    addEvents(tickets);
-
-    return true;
-  }
 };
