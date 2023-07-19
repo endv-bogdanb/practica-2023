@@ -137,10 +137,8 @@ const makeRandomEvent = () => {
   });
 };
 
-makeRandomEvent();
-makeRandomEvent();
-makeRandomEvent();
-makeRandomEvent();
-makeRandomEvent();
-makeRandomEvent();
-makeRandomEvent();
+const nbOfRandomEvents = 7;
+
+for (let i = 0; i < nbOfRandomEvents; i++) {
+    makeRandomEvent();
+}
