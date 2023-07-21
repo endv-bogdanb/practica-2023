@@ -5,12 +5,12 @@ export function handleSort(property) {
     switch (property) {
         case 'name': {
             const icon = document.getElementById('sorting-icon-1');
-            switchItems(icon, ['event', 'name']);
+            sortElements(icon, ['event', 'name']);
             break;
         }
         case 'price': {
             const icon = document.getElementById('sorting-icon-2');
-            switchItems(icon, ['totalPrice']);
+            sortElements(icon, ['totalPrice']);
             break;
         }
         default:
@@ -18,20 +18,20 @@ export function handleSort(property) {
     }
 }
 
-function switchItems(icon, properties) {
+function sortElements(icon, properties) {
     if (icon.classList.contains('fa-arrow-up-wide-short')) {
         icon.classList.remove('fa-arrow-up-wide-short');
         icon.classList.add('fa-arrow-down-wide-short');
-        reorderItems('descending', properties);
+        sortOrders('descending', properties);
     } else {
         icon.classList.remove('fa-arrow-down-wide-short');
         icon.classList.add('fa-arrow-up-wide-short');
-        reorderItems('ascending', properties);
+        sortOrders('ascending', properties);
     }
 }
 
-function reorderItems(way, arrayOfProperties) {
-    const newOrders = sort(allOrders, way, arrayOfProperties);
+function sortOrders(way, arrayOfProperties) {
+    const newOrders = arrangeOrders(allOrders, way, arrayOfProperties);
     const puchasesContet = document.getElementById('purchases-content');
     while (puchasesContet.firstChild) {
         puchasesContet.removeChild(puchasesContet.firstChild);
@@ -42,7 +42,7 @@ function reorderItems(way, arrayOfProperties) {
     });
 }
 
-function sort(items, way, arrayOfProperties) {
+function arrangeOrders(items, way, arrayOfProperties) {
     const newItems = items.sort(function (firstElement, secondElement) {
         let copyOfProperties = [...arrayOfProperties];
         while (copyOfProperties.length) {
@@ -50,7 +50,7 @@ function sort(items, way, arrayOfProperties) {
             secondElement = secondElement[copyOfProperties[0]];
             copyOfProperties = copyOfProperties.slice(1);
         }
-        if (typeof firstElement === String)
+        if (typeof firstElement === 'string')
             return compareStrings(
                 firstElement.toLowerCase(),
                 secondElement.toLowerCase(),
@@ -62,17 +62,17 @@ function sort(items, way, arrayOfProperties) {
 }
 
 function compareNumbers(firstNumber, secondNumber, way) {
-    return firstNumber > secondNumber
-        ? way === 'ascending'
-            ? 1
-            : -1
-        : firstNumber < secondNumber
-        ? way === 'ascending'
-            ? -1
-            : 1
-        : 0;
+    if(way === "ascending"){
+        return firstNumber - secondNumber;
+    } else {
+        return secondNumber - firstNumber; 
+    };
 }
 
-function compareStrings(firstString, secondString) {
-    return firstString.localeCompare(secondString);
+function compareStrings(firstString, secondString,way) {
+    if(way === "ascending"){
+        return firstString.localeCompare(secondString);
+    } else {
+        return -firstString.localeCompare(secondString);; 
+    };
 }
