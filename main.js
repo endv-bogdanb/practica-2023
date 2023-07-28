@@ -50,7 +50,7 @@ function getOrdersPageTemplate() {
                     <span class="flex-1">Nr tickets</span>
                     <span class="flex-1">Category</span>
                     <span class="flex-1 hidden md:flex">Date</span>
-                    <button class="flex text-center justify-center" id="sorting-button-2">
+                    <button class="hidden md:flex text-center justify-center" id="sorting-button-2">
                         <span>Price</span>
                         <i class="fa-solid fa-arrow-up-wide-short text-xl" id="sorting-icon-2"></i>                  
                     </button>
