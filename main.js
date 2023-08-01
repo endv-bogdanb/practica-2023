@@ -1,8 +1,11 @@
 // Imports
-import { addEvents, handleSearch } from './src/utils';
+import { addEvents, handleSearch, addEventListenersForCheckboxes} from './src/utils';
 import { createOrderItem } from './src/components/createOrderItem.js';
 import { getTicketCategories } from './src/components/api/getTicketCategories.js';
 import { removeLoader, addLoader } from './src/components/loader';
+import { getTicketEvents } from './src/components/api/getTicketEvents.js';
+import { createCheckboxesForEvents } from './src/components/createCheckboxesForEvents';
+
 import './src/mocks/handlers';
 
 let events = null;
@@ -149,22 +152,28 @@ async function fetchOrders() {
   return orders;
 }
 
-function renderHomePage() {
+async function renderHomePage() {
   const mainContentDiv = document.querySelector('.main-content-component');
   mainContentDiv.innerHTML = getHomePageTemplate();
 
   setupFilterEvents();
   setupSearchEvents();
   addLoader();
+  const filters = {}; 
+  try {
+    const eventsData = await getTicketEvents(filters);
+    events = Array.isArray(eventsData) ? eventsData : []; 
 
-  fetchTicketEvents()
-    .then((data) => {
-      events = data;
-      setTimeout(() => {
-        removeLoader();
-      }, 200);
-      addEvents(events);
-    });
+    setTimeout(() => {
+      removeLoader();
+    }, 200);
+
+    createCheckboxesForEvents(events);
+    addEventListenersForCheckboxes(events);
+    addEvents(events, filters);
+  } catch (error) {
+    console.error('Error fetching events data:', error);
+  }
 }
 
 function renderOrdersPage(categories) {

@@ -141,3 +141,17 @@ h1 {
   padding: 0;
   color: #de411b
 }
+
+.filter-container {
+  display: flex;
+  flex-direction: column;
+  margin: 32px;
+}
+
+.filter-container h3 {
+  font-weight: 600;
+}
+
+.all-filters-container {
+  display: flex;
+}
