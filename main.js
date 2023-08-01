@@ -140,12 +140,6 @@ function setupInitialPage() {
   renderContent(initialUrl);
 }
 
-async function fetchTicketEvents() {
-  const response = await fetch('/api/ticketEvents');
-  const data = await response.json();
-  return data;
-}
-
 async function fetchOrders() {
   const response = await fetch('/api/orders');
   const orders = await response.json();

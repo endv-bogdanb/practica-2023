@@ -28,28 +28,6 @@ export const addEvents = (events) => {
   }
 };
 
-
-export function filterEvents(events, filters) {
-  const { venue, eventType } = filters;
-
-  if (!venue.length && !eventType.length) {
-    return events;
-  }
-  let filteredEvents = events;
-  if (venue.length) {
-    filteredEvents = filteredEvents.filter((event) =>
-      venue.includes(event.venue.id.toString())
-    );
-  }
-
-  if (eventType.length) {
-    filteredEvents = filteredEvents.filter((event) =>
-      eventType.includes(event.eventType.id.toString())
-    );
-  }
-  return filteredEvents;
-}
-
 /**
  *
  * @param {string} str
