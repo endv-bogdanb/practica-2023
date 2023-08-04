@@ -1,4 +1,5 @@
 import { createEvent } from './components/createEvent';
+import { getTicketEvents } from './components/api/getTicketEvents';
 
 /**
  *
@@ -19,7 +20,7 @@ export const addEvents = (events) => {
   const eventsDiv = document.querySelector('.events');
   eventsDiv.innerHTML = 'No events available';
 
-  if(events.length) {
+  if (events.length) {
     eventsDiv.innerHTML = '';
     events.forEach((event) => {
       eventsDiv.appendChild(createEvent(event));
@@ -55,3 +56,46 @@ export const handleSearch = async (searchTerm) => {
 
   return filteredTickets.length > 0;
 };
+
+export async function handleCheckboxFilter(events) {
+  const filters = getFilters();
+  try {
+    const filteredData = await getTicketEvents(filters);
+    addEvents(filteredData);
+  } catch (error) {
+    console.error('Error fetching filtered events:', error);
+  }
+}
+
+
+export function addEventListenersForCheckboxes(events) {
+  const venueCheckboxes = document.querySelectorAll('[id^="filter-by-venue"]');
+  venueCheckboxes.forEach((checkbox) => {
+    checkbox.addEventListener('change', () => handleCheckboxFilter(events));
+  });
+
+  const eventTypeCheckboxes = document.querySelectorAll('[id^="filter-by-event-type"]');
+  eventTypeCheckboxes.forEach((checkbox) => {
+    checkbox.addEventListener('change', () => handleCheckboxFilter(events));
+  });
+  handleCheckboxFilter(events);
+}
+
+
+export function getFilters() {
+  const venueFilters = Array.from(document.querySelectorAll('[id^="filter-by-venue"]'))
+    .filter((checkbox) => checkbox.checked)
+    .map((checkbox) => checkbox.value);
+
+  const eventTypeFilters = Array.from(document.querySelectorAll('[id^="filter-by-event-type"]'))
+    .filter((checkbox) => checkbox.checked)
+    .map((checkbox) => checkbox.value);
+
+  return {
+    venue: venueFilters,
+    eventType: eventTypeFilters,
+  };
+}
+
+
+

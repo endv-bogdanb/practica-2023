@@ -4,6 +4,22 @@ import { deleteOrder } from './api/deleteOrder.js';
 import { useStyle } from './styles';
 import { addLoader, removeLoader } from './loader';
 
+function checkAndDisplayNoTicketsMessage() {
+  const purchasesDiv = document.querySelector('.purchases');
+  const purchases = purchasesDiv.querySelectorAll('[id^="purchase-"]');
+  const noTicketsMessage = purchasesDiv.querySelector('.no-tickets-message');
+
+  if (purchases.length === 0 && !noTicketsMessage) {
+    const newNoTicketsMessage = document.createElement('div');
+    newNoTicketsMessage.classList.add('no-tickets-message');
+    newNoTicketsMessage.textContent = 'No purchased tickets';
+    purchasesDiv.appendChild(newNoTicketsMessage);
+  } else if (purchases.length > 0 && noTicketsMessage) {
+    noTicketsMessage.remove();
+  }
+}
+
+
 export const createOrderItem = (categories, order) => {
   const purchase = document.createElement('div');
   purchase.id = `purchase-${order.id}`;
@@ -146,6 +162,8 @@ export const createOrderItem = (categories, order) => {
 
   function deleteHandler() {
     deleteOrder(order.id);
+    purchase.remove();
+    checkAndDisplayNoTicketsMessage();
   }
 
   return purchase;
