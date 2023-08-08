@@ -12,6 +12,7 @@ let events = null;
 
 // Navigate to a specific URL
 function navigateTo(url) {
+  console.log('abc');
   history.pushState(null, null, url);
   renderContent(url);
 }
@@ -59,10 +60,10 @@ function liveSearch() {
 
   if(filterInput) {
     const searchValue = filterInput.value;
-    
+
     if(searchValue) {
       const filteredEvents = events.filter(event => event.name.toLowerCase().includes(searchValue.toLowerCase()));
-    
+
       addEvents(filteredEvents);
     }
   }
@@ -87,7 +88,7 @@ function setupSearchEvents() {
   const searchButton = document.querySelector('.search-button');
   const eventSection = document.querySelector('.events');
 
-  
+
   if(searchForm) {
     searchForm.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -153,10 +154,10 @@ async function renderHomePage() {
   setupFilterEvents();
   setupSearchEvents();
   addLoader();
-  const filters = {}; 
+  const filters = {};
   try {
     const eventsData = await getTicketEvents(filters);
-    events = Array.isArray(eventsData) ? eventsData : []; 
+    events = Array.isArray(eventsData) ? eventsData : [];
 
     setTimeout(() => {
       removeLoader();
