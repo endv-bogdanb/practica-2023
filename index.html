@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        
+        
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&amp;display=swap" rel="stylesheet">
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+            integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+        />
+
+        <title>Ticket Management</title>
+      <script type="module" crossorigin src="/assets/index-02a531b2.js"></script>
+      <link rel="stylesheet" href="/assets/index-cb766ff8.css">
+    </head>
+
+    <body>
+        <header id="page-header" class="opacity-25">
+            <nav
+                class="container mx-auto px-4 py-2 flex items-center justify-between"
+            >
+                <div>
+                    <a href="/" aria-label="Go to home page" class="text-white font-bold text-2xl">
+                        <img class="logo" src="/assets/logo-c67c3cec.png" alt="app logo">
+                    </a>
+                </div>
+                <div class="hidden md:block">
+                    <ul class="flex space-x-4">
+                        <li>
+                            <a
+                                href="/"
+                                class="text-white hover:text-black text-lg font-bold link-item"
+                                >Home</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                href="/orders"
+                                class="text-white hover:text-black text-lg font-bold link-item"
+                                >Orders</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+                <div class="w-16 flex justify-end pr-2">
+                    <div class="md:hidden">
+                        <button
+                            type="button"
+                            class="text-gray-700 hover:text-blue-950 focus:outline-none focus:text-blue-950"
+                            id="mobileMenuBtn"
+                            aria-label="mobile menu"
+                        >
+                            <i class="fa-solid fa-bars text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+            <div class="md:hidden hidden" id="mobileMenu">
+                <ul class="bg-gray-700 rounded-md text-white">
+                    <li>
+                        <a href="/" class="block px-4 py-2 hover:bg-gray-600"
+                            >Home</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="/orders"
+                            class="block px-4 py-2 hover:bg-gray-600"
+                            >Orders</a
+                        >
+                    </li>
+                </ul>
+            </div>
+        </header>
+        <div
+            id="loader"
+            class="opacity-100 fixed top-2/4 left-1/2 -translate-x-1/2 translate-y-1/2"
+        >
+            <i
+                class="fa-solid fa-spinner fa-spin text-[50px] content-center"
+            ></i>
+        </div>
+
+        <main class="main-content-component"></main>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    </body>
+</html>
