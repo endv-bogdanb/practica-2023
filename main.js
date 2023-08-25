@@ -200,9 +200,9 @@ function renderContent(url) {
   const mainContentDiv = document.querySelector('.main-content-component');
   mainContentDiv.innerHTML = '';
 
-  if (url === '/') {
+  if (url === '/practica-2023' || url === '/practica-2023/') {
     renderHomePage();
-  } else if (url === '/orders') {
+  } else if (url === '/practica-2023/orders') {
     getTicketCategories()
       .then((categories) => {
         renderOrdersPage(categories);
