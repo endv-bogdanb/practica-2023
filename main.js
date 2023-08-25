@@ -19,7 +19,7 @@ function navigateTo(url) {
 function getHomePageTemplate() {
   return `
    <div id="content" class="hidden">
-      <img src="./src/assets/Endava.png" alt="summer">
+      <img src="Endava.png" alt="summer">
       <div class="flex flex-col items-center">
         <div class="w-80">
           <h1>Explore Events</h1>

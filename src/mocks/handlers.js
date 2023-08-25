@@ -162,8 +162,6 @@ const handlers = [
 
 const worker = setupWorker(...handlers);
 
-worker.printHandlers();
-
 worker.start({
   serviceWorker: {
     url: '/practica-2023/mockServiceWorker.js',
