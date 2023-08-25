@@ -1,12 +1,15 @@
 // Imports
-import { addEvents, handleSearch, addEventListenersForCheckboxes} from './src/utils';
+import {
+  addEvents,
+  handleSearch,
+  addEventListenersForCheckboxes,
+} from './src/utils';
 import { createOrderItem } from './src/components/createOrderItem.js';
 import { getTicketCategories } from './src/components/api/getTicketCategories.js';
 import { removeLoader, addLoader } from './src/components/loader';
 import { getTicketEvents } from './src/components/api/getTicketEvents.js';
 import { createCheckboxesForEvents } from './src/components/createCheckboxesForEvents';
-
-import './src/mocks/handlers';
+import { worker } from './src/mocks/handlers';
 
 let events = null;
 
@@ -57,22 +60,23 @@ function getOrdersPageTemplate() {
 function liveSearch() {
   const filterInput = document.querySelector('#filter-name');
 
-  if(filterInput) {
+  if (filterInput) {
     const searchValue = filterInput.value;
-    
-    if(searchValue) {
-      const filteredEvents = events.filter(event => event.name.toLowerCase().includes(searchValue.toLowerCase()));
-    
+
+    if (searchValue) {
+      const filteredEvents = events.filter((event) =>
+        event.name.toLowerCase().includes(searchValue.toLowerCase())
+      );
+
       addEvents(filteredEvents);
     }
   }
-
 }
 
 function setupFilterEvents() {
   const nameFilterInput = document.querySelector('#filter-name');
 
-  if(nameFilterInput) {
+  if (nameFilterInput) {
     const filterInterval = 500;
 
     nameFilterInput.addEventListener('keyup', () => {
@@ -87,8 +91,7 @@ function setupSearchEvents() {
   const searchButton = document.querySelector('.search-button');
   const eventSection = document.querySelector('.events');
 
-  
-  if(searchForm) {
+  if (searchForm) {
     searchForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const searchTerm = searchInput.value.trim().toLowerCase();
@@ -99,7 +102,7 @@ function setupSearchEvents() {
     });
   }
 
-  if(searchButton) {
+  if (searchButton) {
     searchButton.addEventListener('click', () => {
       searchInput.classList.toggle('active');
     });
@@ -153,10 +156,10 @@ async function renderHomePage() {
   setupFilterEvents();
   setupSearchEvents();
   addLoader();
-  const filters = {}; 
+  const filters = {};
   try {
     const eventsData = await getTicketEvents(filters);
-    events = Array.isArray(eventsData) ? eventsData : []; 
+    events = Array.isArray(eventsData) ? eventsData : [];
 
     setTimeout(() => {
       removeLoader();
@@ -178,20 +181,19 @@ function renderOrdersPage(categories) {
   addLoader();
 
   if (purchasesDiv) {
-    fetchOrders()
-      .then((orders) => {
-        if (orders.length > 0) {
-          setTimeout(() => {
-            removeLoader();
-          }, 200);
-          orders.forEach((order) => {
-            const newOrder = createOrderItem(categories, order);
-            purchasesDiv.appendChild(newOrder);
-          });
-        } else {
+    fetchOrders().then((orders) => {
+      if (orders.length > 0) {
+        setTimeout(() => {
           removeLoader();
-        }
-      });
+        }, 200);
+        orders.forEach((order) => {
+          const newOrder = createOrderItem(categories, order);
+          purchasesDiv.appendChild(newOrder);
+        });
+      } else {
+        removeLoader();
+      }
+    });
   }
 }
 
@@ -213,11 +215,18 @@ function renderContent(url) {
   }
 }
 
-
-// Call the setup functions
-setupFilterEvents();
-setupSearchEvents();
-setupNavigationEvents();
-setupMobileMenuEvent();
-setupPopstateEvent();
-setupInitialPage();
+worker
+  .start({
+    serviceWorker: {
+      url: '/practica-2023/mockServiceWorker.js',
+    },
+  })
+  .then(() => {
+    // Call the setup functions
+    setupFilterEvents();
+    setupSearchEvents();
+    setupNavigationEvents();
+    setupMobileMenuEvent();
+    setupPopstateEvent();
+    setupInitialPage();
+  });

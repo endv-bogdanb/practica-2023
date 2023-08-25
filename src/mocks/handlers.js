@@ -160,10 +160,6 @@ const handlers = [
   }),
 ];
 
-const worker = setupWorker(...handlers);
+export const worker = setupWorker(...handlers);
 
-worker.start({
-  serviceWorker: {
-    url: '/practica-2023/mockServiceWorker.js',
-  },
-});
+
